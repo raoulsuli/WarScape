@@ -1,23 +1,45 @@
+@import "./components/button/Button.css";
+
 body {
-    @apply bgTeal;
+  @apply bgTeal;
 }
 
 .bgWhite {
-    background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .bgTeal {
-    background-color: #D6EDED;
+  background-color: #d6eded;
 }
 
 .bgBlack {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 .bgRed {
-    background-color: #DD7F73;
+  background-color: #dd7f73;
 }
 
 .bgGreen {
-    background-color: #316A74;
+  background-color: #316a74;
+}
+
+.colorWhite {
+  color: #fafafa;
+}
+
+.colorTeal {
+  color: #d6eded;
+}
+
+.colorBlack {
+  color: #000000;
+}
+
+.colorRed {
+  color: #dd7f73;
+}
+
+.colorGreen {
+  color: #316a74;
 }
