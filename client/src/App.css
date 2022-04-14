@@ -1,0 +1,23 @@
+body {
+    @apply bgTeal;
+}
+
+.bgWhite {
+    background-color: #FAFAFA;
+}
+
+.bgTeal {
+    background-color: #D6EDED;
+}
+
+.bgBlack {
+    background-color: #000000;
+}
+
+.bgRed {
+    background-color: #DD7F73;
+}
+
+.bgGreen {
+    background-color: #316A74;
+}
