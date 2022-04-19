@@ -52,11 +52,11 @@ body {
   /* Navbar */
 
   .nav {
-    @apply flex justify-between items-center mx-auto px-2 sm:px-4 py-2.5;
+    @apply flex justify-between items-center mx-auto px-2 sm:px-4;
   }
 
-  .logoWrapper {
-    @apply flex items-center;
+  .logoDiv {
+    @apply flex items-center mr-5 sm:mr-0;
   }
 
   .logo {
@@ -67,8 +67,8 @@ body {
     @apply text-3xl font-bold colorGreen mt-1.5;
   }
 
-  .navLinksWrapper {
-    @apply flex basis-1/4 gap-8 mt-2;
+  .navLinksDiv {
+    @apply hidden md:flex basis-1/4 gap-8 mt-3;
   }
 
   .navLink {
@@ -79,8 +79,16 @@ body {
     @apply text-xl font-semibold colorRed;
   }
 
+  .menuBar {
+    @apply flex mt-3;
+  }
+
   .userIcon {
     @apply h-10 w-10 colorRed cursor-pointer;
+  }
+
+  .menuIcon {
+    @apply md:hidden h-10 w-10 colorGreen cursor-pointer ml-2.5;
   }
 
   /* Buttons */
@@ -100,8 +108,17 @@ body {
     opacity: 0.85;
   }
 
-  .btnRed:focus,
-  .userIcon:focus {
+  .btnRed:focus {
     @apply ring-[#DD7F7399];
+  }
+
+  /* Dropdown */
+
+  .dropdownMenu {
+    @apply bgWhite rounded shadow border-2;
+  }
+
+  .dropdownItem {
+    @apply colorGreen font-semibold hover:bg-gray-300 py-2 px-4 rounded cursor-pointer;
   }
 }
