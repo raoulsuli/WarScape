@@ -1,3 +1,107 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bgTeal;
+}
+
+@layer components {
+  /* Colors */
+
+  .bgWhite {
+    background-color: #fafafa;
+  }
+
+  .bgTeal {
+    background-color: #d6eded;
+  }
+
+  .bgBlack {
+    background-color: #000000;
+  }
+
+  .bgRed {
+    background-color: #dd7f73;
+  }
+
+  .bgGreen {
+    background-color: #316a74;
+  }
+
+  .colorWhite {
+    color: #fafafa;
+  }
+
+  .colorTeal {
+    color: #d6eded;
+  }
+
+  .colorBlack {
+    color: #000000;
+  }
+
+  .colorRed {
+    color: #dd7f73;
+  }
+
+  .colorGreen {
+    color: #316a74;
+  }
+
+  /* Navbar */
+
+  .nav {
+    @apply flex justify-between items-center mx-auto px-2 sm:px-4 py-2.5;
+  }
+
+  .logoWrapper {
+    @apply flex items-center;
+  }
+
+  .logo {
+    @apply mr-2 h-12 sm:h-12;
+  }
+
+  .brandName {
+    @apply text-3xl font-bold colorGreen mt-1.5;
+  }
+
+  .navLinksWrapper {
+    @apply flex basis-1/4 gap-8 mt-2;
+  }
+
+  .navLink {
+    @apply text-xl font-semibold colorGreen;
+  }
+
+  .navLinkActive {
+    @apply text-xl font-semibold colorRed;
+  }
+
+  .userIcon {
+    @apply h-10 w-10 colorRed cursor-pointer;
+  }
+
+  /* Buttons */
+
+  .btn {
+    @apply focus:outline-none text-white focus:ring-4 rounded-lg text-xl font-semibold py-1.5 mb-2;
+  }
+
+  .btnRed {
+    background-color: #dd7f73;
+  }
+
+  /* Pseudo-classes */
+
+  .btnRed:hover,
+  .userIcon:hover {
+    opacity: 0.85;
+  }
+
+  .btnRed:focus,
+  .userIcon:focus {
+    @apply ring-[#DD7F7399];
+  }
+}
