@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import { Button } from "./Button";
 import { UserCircleIcon, MenuIcon } from "@heroicons/react/outline";
@@ -10,6 +10,7 @@ import { useOutsideClick } from "../constants";
 export const Navbar = () => {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [navMenuOpened, setNavMenuOpened] = useState(false);
+  const navigate = useNavigate();
 
   const menuRef = {
     ref1: useRef(null),
@@ -46,7 +47,7 @@ export const Navbar = () => {
             </>
           ) : (
             <Button
-              onClick={() => {}}
+              onClick={() => navigate("login")}
               btnColor="btnRed"
               text="Sign in"
               size="md"
