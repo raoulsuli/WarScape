@@ -68,7 +68,7 @@ body {
   }
 
   .navLinksDiv {
-    @apply hidden lg:flex gap-8 mt-3 mr-40;
+    @apply hidden lg:flex gap-8 mt-3 mr-36;
   }
 
   .navLink {
