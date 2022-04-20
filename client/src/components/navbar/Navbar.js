@@ -33,14 +33,16 @@ export const Navbar = () => {
           <div className="brandName">WarScape</div>
         </Link>
 
-        <div className="navLinksDiv">
-          <NavItem path="borders" />
-          <NavItem path="shelters" />
-          <NavItem path="rides" />
-        </div>
+        {false /* is_logged_in */ && (
+          <div className="navLinksDiv">
+            <NavItem path="borders" />
+            <NavItem path="shelters" />
+            <NavItem path="rides" />
+          </div>
+        )}
 
         <div className="menuBar">
-          {true /* is_logged_in */ ? (
+          {false /* is_logged_in */ ? (
             <>
               <UserCircleIcon ref={menuRef.ref2} className="userIcon" />
               <MenuIcon ref={navRef.ref2} className="menuIcon" />
@@ -50,7 +52,7 @@ export const Navbar = () => {
               onClick={() => navigate("login")}
               btnColor="btnRed"
               text="Sign in"
-              size="md"
+              size="sm"
               className="mt-1"
             />
           )}

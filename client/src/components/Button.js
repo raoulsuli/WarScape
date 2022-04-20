@@ -1,11 +1,11 @@
-export const Button = ({ text, btnColor, onClick, size, className }) => {
-  const sizes = { sm: "px-2.5", md: "px-5", lg: "px-20" };
+const sizes = { xs: "w-50", md: "w-72", lg: "w-96" };
 
+export const Button = ({ text, btnColor, size, className, ...props }) => {
   return (
     <button
-      onClick={onClick}
       type="button"
       className={`btn ${btnColor} ${sizes[size]} ${className}`}
+      {...props}
     >
       {text}
     </button>

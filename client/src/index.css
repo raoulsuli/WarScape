@@ -94,78 +94,21 @@ body {
   /* Buttons */
 
   .btn {
-    @apply focus:outline-none text-white focus:ring-4 rounded-lg text-xl font-semibold py-1.5 mb-2;
+    @apply focus:outline-none text-white focus:ring-4 rounded-lg text-xl font-semibold py-1.5 px-2.5 mb-2;
   }
 
   .btnRed {
     @apply bgRed;
   }
 
-  /*Login*/
-  .login {
-    font-family: sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 15px;
-    height: 100vh;
-    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-    background-color: #d6eded;
+  /* Input */
+
+  .inputField {
+    @apply bgWhite px-2.5 py-2 text-sm rounded-lg shadow-md border-2 border-[#316a74] text-gray-900 focus:ring-blue-500 focus:border-blue-500;
   }
 
-  input[type="text"],
-  input[type="password"] {
-    height: 25px;
-
-    border: 2px;
-    border-color: #316a74;
-  }
-
-  input[type="submit"] {
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 15px;
-    background: #01d28e;
-    border: 1px solid #01d28e;
-    color: #fff;
-    padding: 10px 20px;
-  }
-
-  input[type="submit"]:hover {
-    background: #6cf0c2;
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: center;
-  }
-
-  .login-form {
-    background-color: white;
-    padding: 2rem;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-
-  .list-container {
-    display: flex;
-  }
-
-  .error {
-    color: red;
-    font-size: 12px;
-  }
-
-  .title {
-    font-size: 25px;
-    margin-bottom: 20px;
-  }
-
-  .input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 10px;
+  .checkboxField {
+    @apply shadow-none cursor-pointer;
   }
 
   /* Pseudo-classes */
@@ -176,7 +119,7 @@ body {
   }
 
   .btnRed:focus {
-    @apply ring-[#DD7F7399];
+    @apply ring-[#dd7f7399];
   }
 
   /* Dropdown */
