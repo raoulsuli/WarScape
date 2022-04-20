@@ -4,22 +4,23 @@ import { Button } from "../components/Button";
 
 export const Login = () => {
   return (
-    <div className="flex justify-center py-24 px-4">
+    <div className="loginContainer">
       <div className="text-center">
         <div className="mb-10">
-          <p className="text-4xl font-semibold">
+          <p className="bigHeader">
             <span className="colorRed">Sign in</span> to your account
           </p>
-          <p className="text-2xl font-medium text-center">
+
+          <p className="smallHeader">
             Or{" "}
-            <Link to="register" className="colorGreen font-semibold">
+            <Link to="register" className="registerRedirect">
               register
             </Link>{" "}
             a new account
           </p>
         </div>
 
-        <div className="flex items-center flex-col gap-3">
+        <div className="loginForm">
           <Input
             size="lg"
             type="email"
@@ -37,15 +38,15 @@ export const Login = () => {
           />
         </div>
 
-        <div className="flex justify-between mx-1 my-4">
+        <div className="toolsLogin">
           <div className="text-md">
             <Input type="checkbox" id="rememberMe" className="mr-1.5" />
             Remember me
           </div>
-          <div className="text-md colorGreen font-semibold cursor-pointer">
-            Forgot your password?
-          </div>
+
+          <div className="forgotPassword">Forgot your password?</div>
         </div>
+
         <Button onClick={() => {}} btnColor="btnRed" text="Sign in" size="lg" />
       </div>
     </div>

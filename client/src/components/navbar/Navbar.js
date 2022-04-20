@@ -28,13 +28,13 @@ export const Navbar = () => {
   return (
     <div className="relative">
       <nav className="nav">
-        <Link to="/" className="logoDiv">
+        <Link to="/" className="logoContainer">
           <Logo className="logo" alt="WarScape Logo" />
           <div className="brandName">WarScape</div>
         </Link>
 
         {false /* is_logged_in */ && (
-          <div className="navLinksDiv">
+          <div className="navLinksContainer">
             <NavItem path="borders" />
             <NavItem path="shelters" />
             <NavItem path="rides" />

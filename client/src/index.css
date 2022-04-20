@@ -55,7 +55,7 @@ body {
     @apply flex justify-between items-center mx-auto px-2 sm:px-4;
   }
 
-  .logoDiv {
+  .logoContainer {
     @apply flex items-center mr-5 sm:mr-0;
   }
 
@@ -67,7 +67,7 @@ body {
     @apply text-3xl font-bold colorGreen mt-1.5;
   }
 
-  .navLinksDiv {
+  .navLinksContainer {
     @apply hidden lg:flex gap-8 mt-3 mr-36;
   }
 
@@ -99,6 +99,36 @@ body {
 
   .btnRed {
     @apply bgRed;
+  }
+
+  /* Login */
+
+  .loginContainer {
+    @apply flex justify-center py-24 px-4;
+  }
+
+  .bigHeader {
+    @apply text-4xl font-semibold;
+  }
+
+  .smallHeader {
+    @apply text-2xl font-medium text-center;
+  }
+
+  .registerRedirect {
+    @apply colorGreen font-semibold;
+  }
+
+  .loginForm {
+    @apply flex items-center flex-col gap-3;
+  }
+
+  .toolsLogin {
+    @apply flex justify-between mx-1 my-4;
+  }
+
+  .forgotPassword {
+    @apply colorGreen font-semibold cursor-pointer;
   }
 
   /* Input */
