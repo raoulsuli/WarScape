@@ -13,7 +13,7 @@ export const Login = () => {
 
           <p className="smallHeader">
             Or{" "}
-            <Link to="register" className="registerRedirect">
+            <Link to="/register" className="registerRedirect">
               register
             </Link>{" "}
             a new account

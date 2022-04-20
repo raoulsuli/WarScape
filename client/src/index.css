@@ -104,7 +104,7 @@ body {
   /* Login */
 
   .loginContainer {
-    @apply flex justify-center py-24 px-4;
+    @apply flex justify-center py-28;
   }
 
   .bigHeader {
@@ -129,6 +129,12 @@ body {
 
   .forgotPassword {
     @apply colorGreen font-semibold cursor-pointer;
+  }
+
+  /* Home */
+
+  .homeContainer {
+    @apply flex justify-center py-52 bigHeader;
   }
 
   /* Input */
