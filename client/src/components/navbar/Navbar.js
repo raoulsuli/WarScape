@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ReactComponent as Logo } from "../assets/logo.svg";
-import { Button } from "./Button";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { Button } from "../Button";
 import { UserCircleIcon, MenuIcon } from "@heroicons/react/outline";
-import { NavItem } from "./utils/NavItem";
-import { Dropdown } from "./Dropdown";
-import { useOutsideClick } from "../constants";
+import { NavItem } from "./NavItem";
+import { Dropdown } from "../Dropdown";
+import { useOutsideClick } from "../../constants";
 
 export const Navbar = () => {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
