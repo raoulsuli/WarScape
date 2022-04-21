@@ -115,10 +115,6 @@ body {
     @apply text-2xl font-medium text-center;
   }
 
-  .registerRedirect {
-    @apply colorGreen font-semibold;
-  }
-
   .loginForm {
     @apply flex items-center flex-col gap-3;
   }
@@ -129,6 +125,32 @@ body {
 
   .forgotPassword {
     @apply colorGreen font-semibold cursor-pointer;
+  }
+
+  /* Register */
+
+  .toolsRegister {
+    @apply flex justify-end mx-1 my-4;
+  }
+
+  .registerCol {
+    @apply flex items-center flex-col gap-3;
+  }
+
+  .registerRedirect {
+    @apply colorGreen font-bold;
+  }
+
+  .registerIcon {
+    @apply px-20;
+  }
+
+  .registerIcon:hover {
+    @apply colorRed;
+  }
+
+  .iconHeader {
+    @apply text-2xl font-bold text-justify;
   }
 
   /* Home */
