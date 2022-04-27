@@ -6,7 +6,7 @@ export const Login = () => {
   return (
     <div className="formContainer">
       <div className="text-center">
-        <div className="mb-10">
+        <div className="mb-8">
           <p className="bigHeader">
             <span className="colorRed">Sign in</span> to your account
           </p>

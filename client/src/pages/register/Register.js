@@ -12,7 +12,7 @@ export const Register = () => {
   return (
     <div className="formContainer">
       <div className="text-center">
-        <div className="mb-10">
+        <div className="mb-4">
           <p className="bigHeader">
             <span className="colorRed">Register</span> a new account
           </p>

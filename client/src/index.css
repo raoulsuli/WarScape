@@ -110,7 +110,7 @@ body {
   /* Login/Register */
 
   .formContainer {
-    @apply flex justify-center py-28;
+    @apply flex justify-center py-14;
   }
 
   .bigHeader {
@@ -119,6 +119,10 @@ body {
 
   .smallHeader {
     @apply text-2xl font-medium text-center;
+  }
+
+  .registerRedirect {
+    @apply colorGreen font-semibold;
   }
 
   .loginForm {
@@ -138,7 +142,7 @@ body {
   }
 
   .userTypeContainer {
-    @apply flex flex-row justify-evenly items-center mb-8;
+    @apply flex flex-row justify-evenly items-center mb-6;
   }
 
   .userTypeItem {
