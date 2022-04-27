@@ -49,6 +49,12 @@ body {
     color: #316a74;
   }
 
+  /* General */
+
+  .textMuted {
+    @apply text-gray-500;
+  }
+
   /* Navbar */
 
   .nav {
@@ -84,7 +90,7 @@ body {
   }
 
   .userIcon {
-    @apply h-10 w-10 colorRed cursor-pointer;
+    @apply h-10 colorRed cursor-pointer;
   }
 
   .menuIcon {
@@ -101,9 +107,9 @@ body {
     @apply bgRed;
   }
 
-  /* Login */
+  /* Login/Register */
 
-  .loginContainer {
+  .formContainer {
     @apply flex justify-center py-28;
   }
 
@@ -131,10 +137,26 @@ body {
     @apply colorGreen font-semibold cursor-pointer;
   }
 
+  .registerForm {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .userTypeContainer {
+    @apply flex flex-row justify-evenly items-center mb-8;
+  }
+
+  .userTypeItem {
+    @apply flex flex-col items-center cursor-pointer;
+  }
+
   /* Home */
 
   .homeContainer {
     @apply flex justify-center py-52 bigHeader;
+  }
+
+  .homeText {
+    @apply grid gap-3 text-center;
   }
 
   /* Input */

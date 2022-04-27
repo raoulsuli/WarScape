@@ -4,7 +4,7 @@ import { Button } from "../components/Button";
 
 export const Login = () => {
   return (
-    <div className="loginContainer">
+    <div className="formContainer">
       <div className="text-center">
         <div className="mb-10">
           <p className="bigHeader">
