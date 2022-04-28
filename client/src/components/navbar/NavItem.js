@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { capitalize } from "../../constants";
+import { capitalize } from "../../utils/constants";
 
 export const NavItem = ({ path }) => {
   return (

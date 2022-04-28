@@ -1,22 +1,28 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/register/Register";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 
 function App() {
+  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      loginWithPopup();
+    }
+  }, [isLoading, isAuthenticated, loginWithPopup]);
+
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="login" element={<Login />} />{" "}
-        {/* if not already logged in */}
-        <Route exact path="register" element={<Register />} />{" "}
-        {/* if not already logged in */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
+    isAuthenticated && (
+      <>
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </>
+    )
   );
 }
 

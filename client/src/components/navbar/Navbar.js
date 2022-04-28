@@ -1,17 +1,17 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
-import { Button } from "../Button";
 import { UserCircleIcon, MenuIcon } from "@heroicons/react/outline";
 import { NavItem } from "./NavItem";
 import { Dropdown } from "../Dropdown";
-import { useOutsideClick } from "../../constants";
+import { useOutsideClick } from "../../utils/constants";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Navbar = () => {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [navMenuOpened, setNavMenuOpened] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { logout, user } = useAuth0();
+  console.log(user); //Nu se vad rolurile in user
 
   const menuRef = {
     ref1: useRef(null),
@@ -26,12 +26,6 @@ export const Navbar = () => {
   useOutsideClick(menuRef, setUserMenuOpened);
   useOutsideClick(navRef, setNavMenuOpened);
 
-  const isLoginLocation = () => location.pathname.slice(1) === "login";
-
-  const buttonProps = isLoginLocation()
-    ? { text: "Register", btnColor: "bgGreen", destination: "register" }
-    : { text: "Sign in", btnColor: "bgRed", destination: "login" };
-
   return (
     <div className="relative">
       <nav className="nav">
@@ -40,29 +34,15 @@ export const Navbar = () => {
           <div className="brandName">WarScape</div>
         </Link>
 
-        {false /* is_logged_in */ && (
-          <div className="navLinksContainer">
-            <NavItem path="borders" />
-            <NavItem path="shelters" />
-            <NavItem path="rides" />
-          </div>
-        )}
+        <div className="navLinksContainer">
+          <NavItem path="borders" />
+          <NavItem path="shelters" />
+          <NavItem path="rides" />
+        </div>
 
         <div className="menuBar">
-          {false /* is_logged_in */ ? (
-            <>
-              <UserCircleIcon ref={menuRef.ref2} className="userIcon" />
-              <MenuIcon ref={navRef.ref2} className="menuIcon" />
-            </>
-          ) : (
-            <Button
-              onClick={() => navigate(buttonProps.destination)}
-              btnColor={buttonProps.btnColor}
-              text={buttonProps.text}
-              size="sm"
-              className="mt-1"
-            />
-          )}
+          <UserCircleIcon ref={menuRef.ref2} className="userIcon" />
+          <MenuIcon ref={navRef.ref2} className="menuIcon" />
         </div>
       </nav>
 
@@ -83,7 +63,9 @@ export const Navbar = () => {
       >
         {/* TODO */}
         <Link to="/profile">Edit Profile</Link>
-        Sign out
+        <div onClick={() => logout({ returnTo: window.location.origin })}>
+          Sign out
+        </div>
       </Dropdown>
     </div>
   );

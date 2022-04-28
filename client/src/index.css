@@ -49,12 +49,6 @@ body {
     color: #316a74;
   }
 
-  /* General */
-
-  .textMuted {
-    @apply text-gray-500;
-  }
-
   /* Navbar */
 
   .nav {
@@ -107,52 +101,10 @@ body {
     @apply bgRed;
   }
 
-  /* Login/Register */
-
-  .formContainer {
-    @apply flex justify-center py-14;
-  }
-
-  .bigHeader {
-    @apply text-4xl font-semibold;
-  }
-
-  .smallHeader {
-    @apply text-2xl font-medium text-center;
-  }
-
-  .registerRedirect {
-    @apply colorGreen font-semibold;
-  }
-
-  .loginForm {
-    @apply flex items-center flex-col gap-3;
-  }
-
-  .toolsLogin {
-    @apply flex justify-between mx-1 my-4;
-  }
-
-  .forgotPassword {
-    @apply colorGreen font-semibold cursor-pointer;
-  }
-
-  .registerForm {
-    @apply grid grid-cols-2 gap-3;
-  }
-
-  .userTypeContainer {
-    @apply flex flex-row justify-evenly items-center mb-6;
-  }
-
-  .userTypeItem {
-    @apply flex flex-col items-center cursor-pointer;
-  }
-
   /* Home */
 
   .homeContainer {
-    @apply flex justify-center py-52 bigHeader;
+    @apply flex justify-center py-52 text-4xl font-semibold;
   }
 
   .homeText {
