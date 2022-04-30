@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    container_name: frontend-docker
+    restart: always
+    volumes:
+      - ./client:/usr/src/app
