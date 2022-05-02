@@ -5,13 +5,18 @@ import { UserCircleIcon, MenuIcon } from "@heroicons/react/outline";
 import { NavItem } from "./NavItem";
 import { Dropdown } from "../Dropdown";
 import { useOutsideClick } from "../../utils/constants";
+import { Button } from "../Button";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [navMenuOpened, setNavMenuOpened] = useState(false);
-  const { logout, user } = useAuth0();
-  console.log(user); //Nu se vad rolurile in user
+
+  const navigate = useNavigate();
+  const { loginWithPopup, isAuthenticated, logout } = useAuth0();
+
+  const login = () => loginWithPopup().then(() => navigate(0));
 
   const menuRef = {
     ref1: useRef(null),
@@ -34,15 +39,23 @@ export const Navbar = () => {
           <div className="brandName">WarScape</div>
         </Link>
 
-        <div className="navLinksContainer">
-          <NavItem path="borders" />
-          <NavItem path="shelters" />
-          <NavItem path="rides" />
-        </div>
+        {isAuthenticated && (
+          <div className="navLinksContainer">
+            <NavItem path="borders" />
+            <NavItem path="shelters" />
+            <NavItem path="rides" />
+          </div>
+        )}
 
         <div className="menuBar">
-          <UserCircleIcon ref={menuRef.ref2} className="userIcon" />
-          <MenuIcon ref={navRef.ref2} className="menuIcon" />
+          {isAuthenticated ? (
+            <>
+              <UserCircleIcon ref={menuRef.ref2} className="userIcon" />
+              <MenuIcon ref={navRef.ref2} className="menuIcon" />
+            </>
+          ) : (
+            <Button onClick={login} text="Sign in" className="mt-1" />
+          )}
         </div>
       </nav>
 
@@ -61,8 +74,7 @@ export const Navbar = () => {
         isActive={userMenuOpened}
         className="top-12 right-24 md:right-12"
       >
-        {/* TODO */}
-        <Link to="/profile">Edit Profile</Link>
+        <Link to="/profile">Profile</Link>
         <div onClick={() => logout({ returnTo: window.location.origin })}>
           Sign out
         </div>
