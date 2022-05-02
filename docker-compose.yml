@@ -10,18 +10,14 @@ services:
     restart: always
     volumes:
       - ./client:/usr/src/app
-    networks:
-      - frontend
 
   server:
     build: ./server
     container_name: backend_container
-    ports:
-      - "5000:5000"
     links:
       - db
-    networks:
-      - backend
+    ports:
+      - "5000:5000"
 
   db:
     image: mysql:8.0.21
@@ -32,8 +28,6 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
       - dbdata:/var/lib/mysql
-    networks:
-      - backend
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -47,14 +41,6 @@ services:
     restart: always
     ports:
       - "8081:80"
-    depends_on:
-      - db
-
-networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
 
 volumes:
   dbdata:
