@@ -1,7 +1,6 @@
 FROM node:latest
 
 EXPOSE 3000
-EXPOSE 35729
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/client

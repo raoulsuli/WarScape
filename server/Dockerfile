@@ -7,4 +7,4 @@ WORKDIR /server
 
 RUN pip install -r requirements.txt
 
-CMD python server_main.py
+CMD python server.py

@@ -1,19 +1,18 @@
 from flask import Flask, Response, request, jsonify
 import mysql.connector
 import json
-
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 config = {
     'user': 'root',
     'password': 'root',
-    'host': 'db',
+    # 'host': 'db',
     'port': '3306',
     'database': 'warscape_db'
 }
-
 
 @app.route('/api/shelters', methods=['GET'])
 def get_shelters():
@@ -26,30 +25,32 @@ def get_shelters():
         content = {
             'id': result[0],
             'city': result[1],
-            'lat': result[2],
-            'lon': result[3],
-            'is_full': result[4]
+            'region': result[2],
+            'address': result[3],
+            'size': result[4],
+            'capacity': result[5],
+            'resources': result[6],
+            'doctors': result[7],
+            'risk': result[8]
         }
         payload.append(content)
     connection.commit()
     cursor.close()
     connection.close()
-    return jsonify(payload), 200
-
+    response = jsonify(payload)
+    return response, 200
 
 @app.route('/api/shelters', methods=['POST'])
 def add_shelter():
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
     data = request.get_json()
-    if data and 'city' in data and 'lat' in data and 'lon' in data and 'is_full' in data:
-        city = data['city']
-        lat = data['lat']
-        lon = data['lon']
-        is_full = data['is_full']
+    if data:
         try:
-            cursor.execute('INSERT INTO shelters(city, lat, lon, is_full) VALUES (%s, %s, %s, %s)',
-                           (city, lat, lon, is_full))
+            cursor.execute('INSERT INTO shelters VALUES (%s, %s, %s, %s)', (
+                data["city"], data["region"], data["address"], data["size"],
+                data["capacity"], data["resources"], data["doctors"], data["risk"]
+            ))
             connection.commit()
             shelter_id = cursor.lastrowid
             cursor.close()

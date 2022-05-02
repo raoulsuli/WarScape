@@ -1,7 +1,6 @@
-version: '3.7'
+version: "3.7"
 
 services:
-
   client:
     build: ./client
     ports:
@@ -26,7 +25,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/:ro
+      - ./server/db:/docker-entrypoint-initdb.d/:ro
       - dbdata:/var/lib/mysql
 
   phpmyadmin:
