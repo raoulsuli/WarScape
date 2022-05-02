@@ -6,12 +6,22 @@ services:
     build: ./client
     ports:
       - "3000:3000"
-    container_name: frontend-docker
+    container_name: frontend-container
     restart: always
     volumes:
       - ./client:/usr/src/app
     networks:
       - frontend
+
+  server:
+    build: ./server
+    container_name: backend_container
+    ports:
+      - "5000:5000"
+    links:
+      - db
+    networks:
+      - backend
 
   db:
     image: mysql:8.0.21
@@ -27,7 +37,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: pma
+    container_name: phpmyadmin-container
     links:
       - db
     environment:
@@ -37,6 +47,8 @@ services:
     restart: always
     ports:
       - "8081:80"
+    depends_on:
+      - db
 
 networks:
   frontend:
@@ -46,4 +58,3 @@ networks:
 
 volumes:
   dbdata:
-    driver: local

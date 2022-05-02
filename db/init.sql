@@ -6,7 +6,6 @@ CREATE TABLE shelters (
     city VARCHAR(200) unique,
     lat DOUBLE,
     lon DOUBLE,
-    max_no_people,
     is_full BOOLEAN,
     PRIMARY KEY (id)
 );
