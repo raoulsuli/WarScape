@@ -7,10 +7,16 @@ const callApi = async (route, method, body) => {
   try {
     const token = await getAccessTokenSilently();
     const path = authSettings.BACKEND_API + route;
-    const options = { headers: { Authorization: `Bearer ${token}` } };
+    const options = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
     if (method) Object.assign(options, { method: method });
-    if (body) Object.assign(options, { body: body });
+    if (body) Object.assign(options, { body: JSON.stringify(body) });
 
     const response = await fetch(path, options);
     const responseData = response.status === 200 ? await response.json() : {};
@@ -25,4 +31,20 @@ const callApi = async (route, method, body) => {
   }
 };
 
-export { callApi };
+const getRequest = (route) => {
+  return callApi(route);
+};
+
+const postRequest = (route, body) => {
+  return callApi(route, "POST", body);
+};
+
+const putRequest = (route, body) => {
+  return callApi(route, "PUT", body);
+};
+
+const deleteRequest = (route, body) => {
+  return callApi(route, "DELETE", body);
+};
+
+export { getRequest, postRequest, putRequest, deleteRequest };

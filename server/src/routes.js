@@ -10,7 +10,7 @@ const { fieldsUndefined } = require("./utils/constants");
 router.get("/shelters", checkJwt, async (_, res) => {
   const shelters = await Shelters.find();
   if (shelters) res.status(200).send(shelters);
-  else res.status(404);
+  else res.status(404).send();
 });
 
 router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
@@ -29,7 +29,7 @@ router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
   ];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
@@ -54,12 +54,12 @@ router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
   const fieldsArr = [id, size, capacity, resources, doctors, risk];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found");
+    res.status(404).send();
     return;
   }
 
@@ -75,8 +75,27 @@ router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
     await shelter.save();
     res.status(200).send(shelter);
   } else {
-    res.status(404).send("Not found");
+    res.status(404).send();
   }
+});
+
+router.delete("/shelters", checkJwt, checkPermission, async (req, res) => {
+  const { id } = req.body;
+
+  const fieldsArr = [id];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send();
+    return;
+  }
+
+  if (!isValidObjectId(id)) {
+    res.status(404).send();
+    return;
+  }
+
+  await Shelters.deleteOne({ _id: id });
+  res.status(200).send();
 });
 
 router.post("/rentShelter", checkJwt, async (req, res) => {
@@ -85,12 +104,12 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
   const fieldsArr = [id, size];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found");
+    res.status(404).send();
     return;
   }
 
@@ -98,21 +117,21 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
 
   if (shelter) {
     if (shelter.size + size <= shelter.capacity) {
-      shelter.size = size;
+      shelter.size += size;
       await shelter.save();
       res.status(200).send(shelter);
     } else {
-      res.status(400).send("Capacity exceeded");
+      res.status(400).send();
     }
   } else {
-    res.status(404).send("Not found");
+    res.status(404).send();
   }
 });
 
 router.get("/borders", checkJwt, async (_, res) => {
   const borders = await Borders.find();
   if (borders) res.status(200).send(borders);
-  res.status(404);
+  res.status(404).send();
 });
 
 router.post("/borders", checkJwt, checkPermission, async (req, res) => {
@@ -121,7 +140,7 @@ router.post("/borders", checkJwt, checkPermission, async (req, res) => {
   const fieldsArr = [city, region, address, size, capacity, risk];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
@@ -144,12 +163,12 @@ router.put("/borders", checkJwt, checkPermission, async (req, res) => {
   const fieldsArr = [id, size, capacity, risk];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found");
+    res.status(404).send();
     return;
   }
 
@@ -163,8 +182,27 @@ router.put("/borders", checkJwt, checkPermission, async (req, res) => {
     await border.save();
     res.status(200).send(border);
   } else {
-    res.status(404).send("Not found");
+    res.status(404).send();
   }
+});
+
+router.delete("/borders", checkJwt, checkPermission, async (req, res) => {
+  const { id } = req.body;
+
+  const fieldsArr = [id];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send();
+    return;
+  }
+
+  if (!isValidObjectId(id)) {
+    res.status(404).send();
+    return;
+  }
+
+  await Borders.deleteOne({ _id: id });
+  res.status(200).send();
 });
 
 router.post("/rentBorder", checkJwt, async (req, res) => {
@@ -173,12 +211,12 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
   const fieldsArr = [id, size];
 
   if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send("Fields incomplete");
+    res.status(400).send();
     return;
   }
 
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found");
+    res.status(404).send();
     return;
   }
 
@@ -186,14 +224,14 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
 
   if (border) {
     if (border.size + size <= border.capacity) {
-      border.size = size;
+      border.size += size;
       await border.save();
       res.status(200).send(border);
     } else {
-      res.status(400).send("Capacity exceeded");
+      res.status(400).send();
     }
   } else {
-    res.status(404).send("Not found");
+    res.status(404).send();
   }
 });
 
