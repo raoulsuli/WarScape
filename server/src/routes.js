@@ -4,15 +4,34 @@ const Users = require("./models/Users");
 const Borders = require("./models/Borders");
 const Shelters = require("./models/Shelters");
 const isValidObjectId = require("mongoose").isValidObjectId;
+const { checkJwt, checkPermission } = require("./utils/auth");
+const { fieldsUndefined } = require("./utils/constants");
 
-router.get("/shelters", async (_, res) => {
+router.get("/shelters", checkJwt, async (_, res) => {
   const shelters = await Shelters.find();
-  res.status(200).send(shelters);
+  if (shelters) res.status(200).send(shelters);
+  else res.status(404);
 });
 
-router.post("/shelters", async (req, res) => {
+router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
   const { city, region, address, size, capacity, resources, doctors, risk } =
     req.body;
+
+  const fieldsArr = [
+    city,
+    region,
+    address,
+    size,
+    capacity,
+    resources,
+    doctors,
+    risk,
+  ];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
 
   const shelter = new Shelters({
     city: city,
@@ -29,11 +48,18 @@ router.post("/shelters", async (req, res) => {
   res.status(200).send(shelter);
 });
 
-router.put("/shelters", async (req, res) => {
+router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
   const { id, size, capacity, resources, doctors, risk } = req.body;
 
+  const fieldsArr = [id, size, capacity, resources, doctors, risk];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
+
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found.");
+    res.status(404).send("Not found");
     return;
   }
 
@@ -49,17 +75,55 @@ router.put("/shelters", async (req, res) => {
     await shelter.save();
     res.status(200).send(shelter);
   } else {
-    res.status(404).send("Not found.");
+    res.status(404).send("Not found");
   }
 });
 
-router.get("/borders", async (_, res) => {
-  const borders = await Borders.find();
-  res.status(200).send(borders);
+router.post("/rentShelter", checkJwt, async (req, res) => {
+  const { id, size } = req.body;
+
+  const fieldsArr = [id, size];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
+
+  if (!isValidObjectId(id)) {
+    res.status(404).send("Not found");
+    return;
+  }
+
+  const shelter = await Shelters.findOne({ _id: id });
+
+  if (shelter) {
+    if (shelter.size + size <= shelter.capacity) {
+      shelter.size = size;
+      await shelter.save();
+      res.status(200).send(shelter);
+    } else {
+      res.status(400).send("Capacity exceeded");
+    }
+  } else {
+    res.status(404).send("Not found");
+  }
 });
 
-router.post("/borders", async (req, res) => {
+router.get("/borders", checkJwt, async (_, res) => {
+  const borders = await Borders.find();
+  if (borders) res.status(200).send(borders);
+  res.status(404);
+});
+
+router.post("/borders", checkJwt, checkPermission, async (req, res) => {
   const { city, region, address, size, capacity, risk } = req.body;
+
+  const fieldsArr = [city, region, address, size, capacity, risk];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
 
   const border = new Borders({
     city: city,
@@ -74,11 +138,18 @@ router.post("/borders", async (req, res) => {
   res.status(200).send(border);
 });
 
-router.put("/borders", async (req, res) => {
+router.put("/borders", checkJwt, checkPermission, async (req, res) => {
   const { id, size, capacity, risk } = req.body;
 
+  const fieldsArr = [id, size, capacity, risk];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
+
   if (!isValidObjectId(id)) {
-    res.status(404).send("Not found.");
+    res.status(404).send("Not found");
     return;
   }
 
@@ -92,7 +163,37 @@ router.put("/borders", async (req, res) => {
     await border.save();
     res.status(200).send(border);
   } else {
-    res.status(404).send("Not found.");
+    res.status(404).send("Not found");
+  }
+});
+
+router.post("/rentBorder", checkJwt, async (req, res) => {
+  const { id, size } = req.body;
+
+  const fieldsArr = [id, size];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send("Fields incomplete");
+    return;
+  }
+
+  if (!isValidObjectId(id)) {
+    res.status(404).send("Not found");
+    return;
+  }
+
+  const border = await Borders.findOne({ _id: id });
+
+  if (border) {
+    if (border.size + size <= border.capacity) {
+      border.size = size;
+      await border.save();
+      res.status(200).send(border);
+    } else {
+      res.status(400).send("Capacity exceeded");
+    }
+  } else {
+    res.status(404).send("Not found");
   }
 });
 

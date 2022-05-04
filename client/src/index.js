@@ -10,9 +10,10 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
   <Auth0Provider
-    domain={authSettings.domain}
-    clientId={authSettings.clientId}
+    domain={authSettings.DOMAIN}
+    clientId={authSettings.CLIENT_ID}
     redirectUri={window.location.origin}
+    audience={authSettings.AUDIENCE}
   >
     <BrowserRouter>
       <App />
