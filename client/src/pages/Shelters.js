@@ -1,7 +1,7 @@
 import { Card } from "../components/Card";
 
 export const Shelters = () => {
-  fetch("http://localhost:5000/api/shelters")
+  fetch("http://localhost:5000/shelters")
     .then((res) => res.json())
     .then((res) => console.log(res));
   return (

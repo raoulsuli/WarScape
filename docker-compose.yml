@@ -8,38 +8,41 @@ services:
     container_name: frontend-container
     restart: always
     volumes:
-      - ./client:/usr/src/app
+      - ./client:/usr/src/app/client
+    networks:
+      - app-network
 
   server:
     build: ./server
-    container_name: backend_container
-    links:
-      - db
-    ports:
-      - "5000:5000"
-
-  db:
-    image: mysql:8.0.21
-    ports:
-      - "31003:3306"
+    container_name: backend-container
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      NODE_ENV: production
     volumes:
-      - ./server/db:/docker-entrypoint-initdb.d/:ro
-      - dbdata:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin-container
+      - ./server:/usr/src/app/server
     links:
       - db
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
     restart: always
     ports:
-      - "8081:80"
+      - "5000:5000"
+    networks:
+      - app-network
+
+  db:
+    image: mongo:latest
+    container_name: db-container
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=WarScape
+    restart: always
+    volumes:
+      - ./server/dbdata:/data/db
+      - ./server/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - app-network
 
 volumes:
   dbdata:
+
+networks:
+  app-network:

@@ -1,10 +1,14 @@
-FROM python:3.8.5-alpine
+FROM node:latest
 
 EXPOSE 5000
 
-COPY . /server
-WORKDIR /server
+RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/server
+WORKDIR /usr/src/app/server
 
-RUN pip install -r requirements.txt
+COPY package*.json ./
+RUN npm install
 
-CMD python server.py
+COPY . .
+
+CMD ["npm", "start"]
