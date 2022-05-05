@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/server.js"
+    "start": "nodemon ./src/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-oauth2-jwt-bearer": "^1.1.0",
-    "mongoose": "^6.3.2"
+    "mongoose": "^6.3.2",
+    "nodemon": "^2.0.16"
   }
 }

@@ -1,4 +1,7 @@
+import { getRequest } from "../components/Http";
+
 export const Home = () => {
+  getRequest("/shelters").then((r) => console.log(r));
   return (
     <div className="homeContainer">
       <div className="homeText">
