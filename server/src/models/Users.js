@@ -7,7 +7,6 @@ const schema = mongoose.Schema({
   city: String,
   region: String,
   pass: String,
-  user_type: String,
 });
 
 module.exports = mongoose.model("Users", schema);

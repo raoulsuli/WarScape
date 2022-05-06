@@ -156,10 +156,10 @@ body {
     @apply colorGreen font-semibold hover:bg-gray-300 py-2 px-4 rounded cursor-pointer;
   }
 
-  /* Card */
+  /* Card & Map */
 
   .cardContainer {
-    @apply grid grid-cols-3 justify-items-center mt-28 overflow-auto;
+    @apply grid grid-cols-3 px-20 justify-items-center mt-28 overflow-auto;
   }
 
   .card {
@@ -176,5 +176,9 @@ body {
 
   .locationStyle {
     @apply text-lg colorGreen;
+  }
+
+  .mapContainer {
+    @apply flex justify-center items-center rounded-t-xl border-b-2 border-gray-400;
   }
 }

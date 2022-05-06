@@ -1,13 +1,12 @@
 import { Button } from "./Button";
+import { Map } from "./Map";
 
 export const Card = ({ id, title, location }) => {
   const rent = () => {};
 
   return (
     <div className="card">
-      <div className="flex justify-center items-center border-b-2 border-gray-400">
-        harta
-      </div>
+      <Map className="mapContainer" location={location} />
       <div className="cardContent">
         <div>
           <div className="nameStyle">{title}</div>

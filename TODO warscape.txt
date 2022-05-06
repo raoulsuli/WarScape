@@ -1,0 +1,31 @@
+PWEB
+
+b & s - card-uri distantate pe media query
+
+Frontend ->
+	Borders ->
+		reverse geocoding, More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
+	Shelters->
+		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
+	Profil ->
+		Input-uri pentru schimb voit, Redirectare la signup fortata
+	Verificari
+
+Backend ->
+	Profil -> get, post, put, delete user
+	Verificari
+
+- User Stories rectificat dupa cod
+- Design rectificat dupa cod
+
+
+IDP
+- utilitar pt management containere
+- rabbitMQ
+- logging
+- CI/CD - build, test, deploy
+- reverse proxy / api gateway
+
+
+-----
+serviciu altertare mail

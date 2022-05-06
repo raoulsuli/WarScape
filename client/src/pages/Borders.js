@@ -1,4 +1,9 @@
 import { Card } from "../components/Card";
+fetch(
+  "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=Aleea%20Avrig,%2014,%20Bucuresti,%20Romania&f=json"
+)
+  .then((r) => r.json())
+  .then((r) => console.log(r));
 
 export const Borders = () => {
   return (
