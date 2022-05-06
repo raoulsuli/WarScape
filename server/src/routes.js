@@ -6,11 +6,78 @@ const Shelters = require("./models/Shelters");
 const isValidObjectId = require("mongoose").isValidObjectId;
 const { checkJwt, checkPermission } = require("./utils/auth");
 const { fieldsUndefined } = require("./utils/constants");
+const { urlencoded } = require("express");
 
 router.get("/shelters", checkJwt, async (_, res) => {
   const shelters = await Shelters.find();
   if (shelters) res.status(200).send(shelters);
   else res.status(404).send();
+});
+
+router.get("/user", checkJwt, async (req, res) => {
+  const { email } = req.body;
+
+  const user = await Users.findOne({ email: email });
+  if (user) res.status(200).send(user);
+  else res.status(404).send();
+});
+
+router.post("/users", checkJwt, async (req, res) => {
+  const { id, first_name, last_name, email, city, region, pass, user_type} = req.body;
+
+  const fieldsArr = [id, first_name, last_name, email, city, region, pass, user_type];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send();
+    return;
+  }
+
+  const user = new Users({
+    first_name : first_name,
+    last_name : last_name,
+    email : email,
+    city : city,
+    region : region,
+    pass : pass,
+    user_type : user_type,
+  });
+
+    await user.save();
+    res.status(200).send(user);
+
+});
+
+router.put("/users", checkJwt, checkPermission, async (req, res) => {
+  const { id, first_name, last_name, email, city, region, pass, user_type} = req.body;
+
+  const fieldsArr = [id, first_name, last_name, email, city, region, pass, user_type];
+
+  if (fieldsUndefined(fieldsArr)) {
+    res.status(400).send();
+    return;
+  }
+
+  if (!isValidObjectId(id)) {
+    res.status(404).send();
+    return;
+  }
+
+  const user = await Users.findOne({ _id: id });
+
+  if (user) {
+    user.first_name = first_name;
+    user.last_name = last_name;
+    user.email = email;
+    user.city = city;
+    user.region = region;
+    user.pass = pass;
+    user.user_type = user_type;
+
+    await user.save();
+    res.status(200).send(user);
+  } else {
+    res.status(404).send();
+  }
 });
 
 router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
