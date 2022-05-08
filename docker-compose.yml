@@ -3,16 +3,25 @@ version: "3.8"
 services:
   client:
     build: ./client
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     ports:
       - "3000:3000"
     container_name: frontend-container
     restart: always
     networks:
       - app-network
+      - logging
 
   server:
     build: ./server
     container_name: backend-container
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     environment:
       NODE_ENV: production
     links:
@@ -22,6 +31,7 @@ services:
       - "5000:5000"
     networks:
       - app-network
+      - logging
 
   db:
     image: mongo:5.0.6
@@ -37,8 +47,36 @@ services:
     networks:
       - app-network
 
+  loki:
+    image: grafana/loki
+    volumes:
+        - ./configs/loki/loki.yml:/etc/config/loki.yml
+        - ./configs/loki/wal:/wal
+    entrypoint:
+        - /usr/bin/loki
+        - -config.file=/etc/config/loki.yml
+    ports:
+      - 3100:3100
+    networks:
+      - logging
+      - visualizing
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana-volume:/var/lib/grafana
+    ports:
+      - 3002:3000
+    depends_on:
+      - loki
+    networks:
+      - visualizing
+
 volumes:
   dbdata:
+  grafana-volume:
 
 networks:
   app-network:
+  logging:
+  visualizing:

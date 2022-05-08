@@ -22,7 +22,6 @@ Backend ->
 IDP
 - utilitar pt management containere
 - rabbitMQ
-- logging
 - CI/CD - build, test, deploy
 - reverse proxy / api gateway
 
