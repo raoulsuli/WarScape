@@ -131,7 +131,6 @@ body {
     @apply grid grid-cols-2 gap-x-8 gap-y-4 justify-items-center mt-28 overflow-auto;
   }
 
-
   .checkboxField {
     @apply shadow-none cursor-pointer;
   }
@@ -164,7 +163,19 @@ body {
   /* Card & Map */
 
   .cardContainer {
-    @apply grid grid-cols-3 px-20 justify-items-center mt-28 overflow-auto;
+    @apply grid grid-cols-1 lg:grid-cols-2 px-20 justify-items-center mt-28 overflow-auto;
+  }
+
+  @media (min-width: 1408px) {
+    .cardContainer {
+      @apply grid-cols-3;
+    }
+  }
+
+  @media (min-width: 1856px) {
+    .cardContainer {
+      @apply grid-cols-4;
+    }
   }
 
   .card {
