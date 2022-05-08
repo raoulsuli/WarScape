@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
   client:
@@ -24,7 +24,7 @@ services:
       - app-network
 
   db:
-    image: mongo:latest
+    image: mongo:5.0.6
     container_name: db-container
     ports:
       - 27017:27017
@@ -32,7 +32,7 @@ services:
       - MONGO_INITDB_DATABASE=WarScape
     restart: always
     volumes:
-      - ./server/dbdata:/data/db
+      - dbdata:/data/db
       - ./server/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - app-network
