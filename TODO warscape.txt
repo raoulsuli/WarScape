@@ -1,7 +1,5 @@
 PWEB
 
-b & s - card-uri distantate pe media query
-
 Frontend ->
 	Borders ->
 		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
