@@ -1,12 +1,17 @@
 import { Button } from "./Button";
 import { Map } from "./Map";
 
-export const Card = ({ id, title, location }) => {
+export const Card = ({ id, title, location, city, region }) => {
   const rent = () => {};
 
   return (
     <div className="card">
-      <Map className="mapContainer" location={location} />
+      <Map
+        className="mapContainer"
+        location={location}
+        city={city}
+        region={region}
+      />
       <div className="cardContent">
         <div>
           <div className="nameStyle">{title}</div>

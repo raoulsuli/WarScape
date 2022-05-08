@@ -4,7 +4,7 @@ b & s - card-uri distantate pe media query
 
 Frontend ->
 	Borders ->
-		reverse geocoding, More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
+		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
 	Shelters->
 		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
 	Profil ->

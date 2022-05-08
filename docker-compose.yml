@@ -7,8 +7,6 @@ services:
       - "3000:3000"
     container_name: frontend-container
     restart: always
-    # volumes:
-    #   - ./client:/usr/src/app/client
     networks:
       - app-network
 
@@ -17,8 +15,6 @@ services:
     container_name: backend-container
     environment:
       NODE_ENV: production
-    # volumes:
-    #   - ./server:/usr/src/app/server
     links:
       - db
     restart: always
