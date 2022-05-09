@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker compose up -d
+      run: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions && docker compose up -d
       
   deploy:
 
