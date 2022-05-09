@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker compose up -d
+      
+  deploy:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: curl -XPOST http://192.168.99.126:9000/api/webhooks/e37c80b1-9315-49d2-b0ad-5b3d8dade98e
