@@ -1,90 +1,79 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("./models/Users");
-const Borders = require("./models/Borders");
-const Shelters = require("./models/Shelters");
+
+const Border = require("./models/Border");
+const Shelter = require("./models/Shelter");
+const RentalHistory = require("./models/RentalHistory");
+
 const isValidObjectId = require("mongoose").isValidObjectId;
+
 const { checkJwt, checkPermission } = require("./utils/auth");
-const { fieldsUndefined } = require("./utils/constants");
-const { urlencoded } = require("express");
+
+const { fieldsUndefined, OBJECT_TYPE } = require("./utils/constants");
+
+// GET
 
 router.get("/shelters", checkJwt, async (_, res) => {
-  const shelters = await Shelters.find();
-  if (shelters) res.status(200).send(shelters);
-  else res.status(404).send();
+  const shelters = await Shelter.find();
+  res.status(200).send(shelters);
 });
 
-router.get("/user", checkJwt, async (req, res) => {
-  const { email } = req.body;
-
-  const user = await Users.findOne({ email: email });
-  if (user) res.status(200).send(user);
-  else res.status(404).send();
+router.get("/borders", checkJwt, async (_, res) => {
+  const borders = await Border.find();
+  res.status(200).send(borders);
 });
 
-router.post("/users", checkJwt, async (req, res) => {
-  const { id, first_name, last_name, email, city, region, pass, user_type} = req.body;
+router.get("/rentals", checkJwt, async (req, res) => {
+  const { email, active } = req.query;
 
-  const fieldsArr = [id, first_name, last_name, email, city, region, pass, user_type];
+  const fieldsArr = [email];
 
   if (fieldsUndefined(fieldsArr)) {
     res.status(400).send();
     return;
   }
 
-  const user = new Users({
-    first_name : first_name,
-    last_name : last_name,
-    email : email,
-    city : city,
-    region : region,
-    pass : pass,
-    user_type : user_type,
+  const queryParams = { user_email: email };
+  if (active) Object.assign(queryParams, { active: true });
+
+  const rentals = await RentalHistory.find(queryParams);
+
+  Promise.all(
+    rentals.map(async (r) =>
+      r.type === OBJECT_TYPE.SHELTER
+        ? await Shelter.findOne({ _id: r.item_id })
+        : await Border.findOne({ _id: r.item_id })
+    )
+  ).then((objects) => {
+    const result = rentals.map((r, index) => ({
+      type: r.type,
+      size: r.size,
+      date: r.date,
+      active: r.active,
+      item: objects[index],
+    }));
+
+    res.status(200).send(result);
   });
-
-    await user.save();
-    res.status(200).send(user);
-
 });
 
-router.put("/users", checkJwt, checkPermission, async (req, res) => {
-  const { id, first_name, last_name, email, city, region, pass, user_type} = req.body;
-
-  const fieldsArr = [id, first_name, last_name, email, city, region, pass, user_type];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
-    return;
-  }
-
-  const user = await Users.findOne({ _id: id });
-
-  if (user) {
-    user.first_name = first_name;
-    user.last_name = last_name;
-    user.email = email;
-    user.city = city;
-    user.region = region;
-    user.pass = pass;
-    user.user_type = user_type;
-
-    await user.save();
-    res.status(200).send(user);
-  } else {
-    res.status(404).send();
-  }
-});
+// POST
 
 router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
-  const { city, region, address, size, capacity, resources, doctors, risk } =
-    req.body;
+  const {
+    title,
+    city,
+    region,
+    address,
+    size,
+    capacity,
+    resources,
+    doctors,
+    risk,
+  } = req.body;
 
   const fieldsArr = [
+    title,
     city,
     region,
     address,
@@ -100,7 +89,8 @@ router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
     return;
   }
 
-  const shelter = new Shelters({
+  const shelter = new Shelter({
+    title: title,
     city: city,
     region: region,
     address: address,
@@ -115,24 +105,156 @@ router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
   res.status(200).send(shelter);
 });
 
-router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
-  const { id, size, capacity, resources, doctors, risk } = req.body;
+router.post("/borders", checkJwt, checkPermission, async (req, res) => {
+  const { title, city, region, address, size, capacity, risk } = req.body;
 
-  const fieldsArr = [id, size, capacity, resources, doctors, risk];
+  const fieldsArr = [title, city, region, address, size, capacity, risk];
 
   if (fieldsUndefined(fieldsArr)) {
     res.status(400).send();
     return;
   }
 
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
+  const border = new Border({
+    title: title,
+    city: city,
+    region: region,
+    address: address,
+    size: size,
+    capacity: capacity,
+    risk: risk,
+  });
+
+  await border.save();
+  res.status(200).send(border);
+});
+
+router.post("/rentShelter", checkJwt, async (req, res) => {
+  const { id, size, date, email } = req.body;
+
+  const fieldsArr = [id, size, date, email];
+
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
+    res.status(400).send();
     return;
   }
 
-  const shelter = await Shelters.findOne({ _id: id });
+  const shelter = await Shelter.findOne({ _id: id });
+  const rentalHistory = await RentalHistory.findOne({
+    type: OBJECT_TYPE.SHELTER,
+    user_email: email,
+    active: true,
+  });
 
   if (shelter) {
+    if (size === 0) {
+      // removal
+      if (rentalHistory) {
+        shelter.size -= rentalHistory.size;
+        rentalHistory.active = false;
+
+        await shelter.save();
+        await rentalHistory.save();
+        res.status(200).send({});
+      } else {
+        res.status(404).send();
+      }
+    } else {
+      if (!rentalHistory && shelter.size + size <= shelter.capacity) {
+        // no current rental
+        shelter.size += size;
+
+        const newRental = new RentalHistory({
+          type: OBJECT_TYPE.SHELTER,
+          item_id: id,
+          size: size,
+          date: date,
+          user_email: email,
+          active: true,
+        });
+
+        await shelter.save();
+        await newRental.save();
+      } else {
+        res.status(400).send();
+      }
+    }
+  } else {
+    res.status(404).send();
+  }
+});
+
+router.post("/rentBorder", checkJwt, async (req, res) => {
+  const { id, size, date, email } = req.body;
+
+  const fieldsArr = [id, size, date, email];
+
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
+    res.status(400).send();
+    return;
+  }
+
+  const border = await Border.findOne({ _id: id });
+  const rentalHistory = await RentalHistory.findOne({
+    type: OBJECT_TYPE.BORDER,
+    user_email: email,
+    active: true,
+  });
+
+  if (border) {
+    if (size === 0) {
+      // removal
+      if (rentalHistory) {
+        border.size -= rentalHistory.size;
+        rentalHistory.active = false;
+
+        await border.save();
+        await rentalHistory.save();
+        res.status(200).send({});
+      } else {
+        res.status(404).send();
+      }
+    } else {
+      if (!rentalHistory && border.size + size <= border.capacity) {
+        // no current rental
+        border.size += size;
+
+        const newRental = new RentalHistory({
+          type: OBJECT_TYPE.BORDER,
+          item_id: id,
+          size: size,
+          date: date,
+          user_email: email,
+          active: true,
+        });
+
+        await border.save();
+        await newRental.save();
+      } else {
+        res.status(400).send();
+      }
+    }
+  } else {
+    res.status(404).send();
+  }
+});
+
+// PUT
+
+router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
+  const { id, title, size, capacity, resources, doctors, risk } = req.body;
+
+  const fieldsArr = [id, title, size, capacity, resources, doctors, risk];
+
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
+    res.status(400).send();
+    return;
+  }
+
+  const shelter = await Shelter.findOne({ _id: id });
+
+  if (shelter) {
+    shelter.title = title;
     shelter.size = size;
     shelter.capacity = capacity;
     shelter.resources = resources;
@@ -146,102 +268,20 @@ router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
   }
 });
 
-router.delete("/shelters", checkJwt, checkPermission, async (req, res) => {
-  const { id } = req.body;
-
-  const fieldsArr = [id];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
-    return;
-  }
-
-  await Shelters.deleteOne({ _id: id });
-  res.status(200).send();
-});
-
-router.post("/rentShelter", checkJwt, async (req, res) => {
-  const { id, size } = req.body;
-
-  const fieldsArr = [id, size];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
-    return;
-  }
-
-  const shelter = await Shelters.findOne({ _id: id });
-
-  if (shelter) {
-    if (shelter.size + size <= shelter.capacity) {
-      shelter.size += size;
-      await shelter.save();
-      res.status(200).send(shelter);
-    } else {
-      res.status(400).send();
-    }
-  } else {
-    res.status(404).send();
-  }
-});
-
-router.get("/borders", checkJwt, async (_, res) => {
-  const borders = await Borders.find();
-  if (borders) res.status(200).send(borders);
-  res.status(404).send();
-});
-
-router.post("/borders", checkJwt, checkPermission, async (req, res) => {
-  const { city, region, address, size, capacity, risk } = req.body;
-
-  const fieldsArr = [city, region, address, size, capacity, risk];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  const border = new Borders({
-    city: city,
-    region: region,
-    address: address,
-    size: size,
-    capacity: capacity,
-    risk: risk,
-  });
-
-  await border.save();
-  res.status(200).send(border);
-});
-
 router.put("/borders", checkJwt, checkPermission, async (req, res) => {
-  const { id, size, capacity, risk } = req.body;
+  const { id, title, size, capacity, risk } = req.body;
 
-  const fieldsArr = [id, size, capacity, risk];
+  const fieldsArr = [id, title, size, capacity, risk];
 
-  if (fieldsUndefined(fieldsArr)) {
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
     return;
   }
 
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
-    return;
-  }
-
-  const border = await Borders.findOne({ _id: id });
+  const border = await Border.findOne({ _id: id });
 
   if (border) {
+    border.title = title;
     border.size = size;
     border.capacity = capacity;
     border.risk = risk;
@@ -253,52 +293,43 @@ router.put("/borders", checkJwt, checkPermission, async (req, res) => {
   }
 });
 
+// DELETE
+
+router.delete("/shelters", checkJwt, checkPermission, async (req, res) => {
+  const { id } = req.body;
+
+  const fieldsArr = [id];
+
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
+    res.status(400).send();
+    return;
+  }
+
+  const response = await Shelter.deleteOne({ _id: id });
+
+  if (response.deletedCount === 0) {
+    res.status(404).send();
+  } else {
+    res.status(200).send({});
+  }
+});
+
 router.delete("/borders", checkJwt, checkPermission, async (req, res) => {
   const { id } = req.body;
 
   const fieldsArr = [id];
 
-  if (fieldsUndefined(fieldsArr)) {
+  if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
     return;
   }
 
-  if (!isValidObjectId(id)) {
+  const response = await Border.deleteOne({ _id: id });
+
+  if (response.deletedCount === 0) {
     res.status(404).send();
-    return;
-  }
-
-  await Borders.deleteOne({ _id: id });
-  res.status(200).send();
-});
-
-router.post("/rentBorder", checkJwt, async (req, res) => {
-  const { id, size } = req.body;
-
-  const fieldsArr = [id, size];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  if (!isValidObjectId(id)) {
-    res.status(404).send();
-    return;
-  }
-
-  const border = await Borders.findOne({ _id: id });
-
-  if (border) {
-    if (border.size + size <= border.capacity) {
-      border.size += size;
-      await border.save();
-      res.status(200).send(border);
-    } else {
-      res.status(400).send();
-    }
   } else {
-    res.status(404).send();
+    res.status(200).send({});
   }
 });
 

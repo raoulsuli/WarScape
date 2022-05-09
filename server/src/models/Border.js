@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const schema = mongoose.Schema({
+  title: String,
   city: String,
   region: String,
   address: String,
@@ -9,4 +10,4 @@ const schema = mongoose.Schema({
   risk: Number,
 });
 
-module.exports = mongoose.model("Borders", schema);
+module.exports = mongoose.model("Border", schema);

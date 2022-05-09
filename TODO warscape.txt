@@ -5,12 +5,9 @@ Frontend ->
 		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
 	Shelters->
 		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
-	Profil ->
-		Input-uri pentru schimb voit, Redirectare la signup fortata
-	Verificari
-
-Backend ->
-	Profil -> get, post, put, delete user
+	Account ->
+		rentals list, reset pass -- alertare mail
+	Pagini Admin
 	Verificari
 
 - User Stories rectificat dupa cod

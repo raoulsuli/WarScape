@@ -43,7 +43,6 @@ export const Navbar = () => {
           <div className="navLinksContainer">
             <NavItem path="borders" />
             <NavItem path="shelters" />
-            <NavItem path="rides" />
           </div>
         )}
 
@@ -66,7 +65,6 @@ export const Navbar = () => {
       >
         <Link to="/borders">Borders</Link>
         <Link to="/shelters">Shelters</Link>
-        <Link to="/rides">Rides</Link>
       </Dropdown>
 
       <Dropdown
@@ -74,7 +72,7 @@ export const Navbar = () => {
         isActive={userMenuOpened}
         className="top-12 right-24 md:right-12"
       >
-        <Link to="/profile">Profile</Link>
+        <Link to="/account">Account</Link>
         <div onClick={() => logout({ returnTo: window.location.origin })}>
           Sign out
         </div>

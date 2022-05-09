@@ -127,10 +127,6 @@ body {
     @apply bgWhite px-2.5 py-2 text-sm rounded-lg shadow-md borderGreen text-gray-900 focus:ring-blue-500 focus:border-blue-500;
   }
 
-  .inputContainer {
-    @apply grid grid-cols-2 gap-x-8 gap-y-4 justify-items-center mt-28 overflow-auto;
-  }
-
   .checkboxField {
     @apply shadow-none cursor-pointer;
   }
@@ -188,10 +184,6 @@ body {
 
   .nameStyle {
     @apply text-2xl colorRed font-semibold;
-  }
-
-  .profileStyle {
-    @apply text-2xl colorGreen font-bold;
   }
 
   .locationStyle {
