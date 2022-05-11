@@ -14,6 +14,7 @@ services:
     networks:
       - app-network
       - logging
+      - monitoring
 
   server:
     build: ./server
@@ -32,10 +33,15 @@ services:
     networks:
       - app-network
       - logging
+      - monitoring
 
   db:
     image: mongo:5.0.6
     container_name: db-container
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
     ports:
       - 27017:27017
     environment:
@@ -46,6 +52,18 @@ services:
       - ./server/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - app-network
+      - logging
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+      - visualizing
 
   loki:
     image: grafana/loki
@@ -95,13 +113,12 @@ services:
     environment:
       KONG_DATABASE: "off" #obligatoriu, daca se vrea modul DB-less
       KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
-      KONG_PROXY_LISTEN: 0.0.0.0:8000
-      KONG_PROXY_LISTEN: 0.0.0.0:8004
-      KONG_PROXY_LISTEN_SSL: 0.0.0.0:8443
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001
     ports:
-      - "8004:8004"
-      - "8001:8001"
       - "8000:8000"
 
 volumes:
@@ -112,3 +129,4 @@ networks:
   app-network:
   logging:
   visualizing:
+  monitoring:
