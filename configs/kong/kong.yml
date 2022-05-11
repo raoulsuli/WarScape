@@ -1,9 +1,9 @@
 _format_version: "2.1"
 
 services:
-  - name: frontendAPI
-    url: http://frontendAPI:8004
+  - name: client
+    url: http://warscape_client
     routes:
       - name: borders
         paths:
-          - /borders
+          - /
