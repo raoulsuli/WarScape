@@ -1,25 +1,27 @@
 PWEB
 
 Frontend ->
-	Borders ->
-		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
-	Shelters->
-		More Info, Update pentru Rent now, Buton de add/edit/delete pentru admin & altele
 	Account ->
-		rentals list, reset pass -- alertare mail
-	Pagini Admin
+		rentals list - active si nonactive, posibilitate de unrent pe nonactive
+	
+	Borders, Shelters ->
+		- nu te lasa sa dai rent daca ai deja rezervat un shelter/border
+		- buton de unrent pentru cea activa
+
+	Admin ->
+		- fara rent pentru admin -- pe b&s
+		- add/edit/delete pentru admin -- pe b&s
+		- pagina de vazut toate rentals -- admin-page
+	
 	Verificari
+
+serviciu altertare mail
 
 - User Stories rectificat dupa cod
 - Design rectificat dupa cod
 
 
 IDP
-- utilitar pt management containere
 - rabbitMQ
 - CI/CD - build, test, deploy
 - reverse proxy / api gateway
-
-
------
-serviciu altertare mail

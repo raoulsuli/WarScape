@@ -11,12 +11,16 @@ export const Button = ({
   width = "",
   height = "lg",
   className = "",
+  disabled,
   ...props
 }) => {
   return (
     <button
       type="button"
-      className={`btn ${btnColor} ${widths[width]} ${heights[height]} ${className}`}
+      className={`btn ${disabled ? "bg-gray-500" : btnColor} ${widths[width]} ${
+        heights[height]
+      } ${className}`}
+      disabled={disabled}
       {...props}
     >
       {text}

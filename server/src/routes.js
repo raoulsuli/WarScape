@@ -26,14 +26,8 @@ router.get("/borders", checkJwt, async (_, res) => {
 router.get("/rentals", checkJwt, async (req, res) => {
   const { email, active } = req.query;
 
-  const fieldsArr = [email];
-
-  if (fieldsUndefined(fieldsArr)) {
-    res.status(400).send();
-    return;
-  }
-
-  const queryParams = { user_email: email };
+  const queryParams = {};
+  if (email) Object.assign(queryParams, { user_email: email });
   if (active) Object.assign(queryParams, { active: true });
 
   const rentals = await RentalHistory.find(queryParams);
@@ -160,14 +154,14 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
         res.status(404).send();
       }
     } else {
-      if (!rentalHistory && shelter.size + size <= shelter.capacity) {
+      if (!rentalHistory && shelter.size + parseInt(size) <= shelter.capacity) {
         // no current rental
-        shelter.size += size;
+        shelter.size += parseInt(size);
 
         const newRental = new RentalHistory({
           type: OBJECT_TYPE.SHELTER,
           item_id: id,
-          size: size,
+          size: parseInt(size),
           date: date,
           user_email: email,
           active: true,
@@ -175,6 +169,7 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
 
         await shelter.save();
         await newRental.save();
+        res.status(200).send(newRental);
       } else {
         res.status(400).send();
       }
@@ -215,14 +210,14 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
         res.status(404).send();
       }
     } else {
-      if (!rentalHistory && border.size + size <= border.capacity) {
+      if (!rentalHistory && border.size + parseInt(size) <= border.capacity) {
         // no current rental
-        border.size += size;
+        border.size += parseInt(size);
 
         const newRental = new RentalHistory({
           type: OBJECT_TYPE.BORDER,
           item_id: id,
-          size: size,
+          size: parseInt(size),
           date: date,
           user_email: email,
           active: true,
@@ -230,6 +225,7 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
 
         await border.save();
         await newRental.save();
+        res.status(200).send(newRental);
       } else {
         res.status(400).send();
       }

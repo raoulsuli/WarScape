@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
-export const Map = ({ location, city, region, className }) => {
+export const Map = ({ address, city, region, className }) => {
   const [position, setPosition] = useState(null);
 
   useEffect(() => {
     fetch(
-      `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${location},${city},${region}&f=json`
+      `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${address},${city},${region}&f=json`
     )
       .then((response) => response.json())
       .then((response) => {
         const coordinates = response.candidates[0].location;
         setPosition([coordinates.y, coordinates.x]);
       });
-  }, [location, city, region]);
+  }, [address, city, region]);
 
   return (
     <>

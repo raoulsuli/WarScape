@@ -1,71 +1,23 @@
-import { Card } from "../components/Card";
+import { useState, useEffect } from "react";
+import { Card } from "../components/card/Card";
+import { useHttp } from "../components/useHttp";
 
 export const Shelters = () => {
+  const [shelters, setShelters] = useState(null);
+  const [getRequest] = useHttp();
+
+  useEffect(() => {
+    getRequest("/shelters").then((shelters) => {
+      setShelters(shelters.data);
+    });
+  }, []);
+
   return (
     <div className="cardContainer">
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Shelter Kiev Cartier1"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
+      {shelters &&
+        shelters.map((data, id) => (
+          <Card key={`shelter-${id}`} type="Shelter" data={data} />
+        ))}
     </div>
   );
 };

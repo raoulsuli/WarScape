@@ -1,43 +1,23 @@
-import { Card } from "../components/Card";
+import { useState, useEffect } from "react";
+import { Card } from "../components/card/Card";
+import { useHttp } from "../components/useHttp";
 
 export const Borders = () => {
+  const [borders, setBorders] = useState(null);
+  const [getRequest] = useHttp();
+
+  useEffect(() => {
+    getRequest("/borders").then((borders) => {
+      setBorders(borders.data);
+    });
+  }, []);
+
   return (
     <div className="cardContainer">
-      <Card
-        id="0"
-        title="Siret"
-        location="Aleea Avrig, 14"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Odesa"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Polonia"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Romania"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
-      <Card
-        id="0"
-        title="Rusia"
-        location="Str. A, Nr 1"
-        city="Bucuresti"
-        region="Bucuresti"
-      />
+      {borders &&
+        borders.map((data, id) => (
+          <Card key={`border-${id}`} type="Border" data={data} />
+        ))}
     </div>
   );
 };

@@ -55,6 +55,10 @@ body {
     @apply border-2 border-[#316a74];
   }
 
+  .zIndex1 {
+    z-index: 1;
+  }
+
   /* Navbar */
 
   .nav {
@@ -90,7 +94,7 @@ body {
   }
 
   .userIcon {
-    @apply h-10 colorRed cursor-pointer;
+    @apply h-10 colorRed cursor-pointer hover:opacity-80;
   }
 
   .menuIcon {
@@ -100,15 +104,15 @@ body {
   /* Buttons */
 
   .btn {
-    @apply focus:outline-none text-white focus:ring-4 rounded-lg font-semibold py-1.5 px-2.5 mb-2;
+    @apply focus:outline-none hover:opacity-80 text-white focus:ring-4 rounded-lg font-semibold py-1.5 px-2.5 mb-2;
   }
 
   .btnRed {
-    @apply bgRed;
+    @apply bgRed focus:ring-[#dd7f7399];
   }
 
   .btnGreen {
-    @apply bgGreen;
+    @apply bgGreen focus:ring-[#316a7499];
   }
 
   /* Home */
@@ -124,26 +128,11 @@ body {
   /* Input */
 
   .inputField {
-    @apply bgWhite px-2.5 py-2 text-sm rounded-lg shadow-md borderGreen text-gray-900 focus:ring-blue-500 focus:border-blue-500;
+    @apply bgWhite px-2.5 py-0.5 text-lg rounded-lg font-semibold shadow-md borderGreen focus:ring-blue-500 focus:border-blue-500;
   }
 
   .checkboxField {
     @apply shadow-none cursor-pointer;
-  }
-
-  /* Pseudo-classes */
-
-  .btn:hover,
-  .userIcon:hover {
-    opacity: 0.85;
-  }
-
-  .btnGreen:focus {
-    @apply ring-[#316a7499];
-  }
-
-  .btnRed:focus {
-    @apply ring-[#dd7f7399];
   }
 
   /* Dropdown */
@@ -175,7 +164,11 @@ body {
   }
 
   .card {
-    @apply grid grid-rows-2 mb-20 bgWhite borderGreen rounded-xl w-96 h-80;
+    @apply grid grid-rows-2 relative mb-20 bgWhite borderGreen rounded-xl w-96 h-80;
+  }
+
+  .badge {
+    @apply absolute text-white rounded-xl w-fit px-2 pb-0.5 font-bold text-center zIndex1;
   }
 
   .cardContent {
@@ -191,6 +184,44 @@ body {
   }
 
   .mapContainer {
-    @apply flex justify-center items-center rounded-t-xl border-b-2 border-gray-400;
+    @apply flex justify-center items-center rounded-t-xl border-b-2 border-gray-400 z-0;
+  }
+
+  /* Modals */
+
+  .modalTitle {
+    @apply text-center text-2xl mt-1 colorRed font-semibold relative;
+  }
+
+  .closeIcon {
+    @apply absolute -right-3 -top-4 h-7 colorBlack cursor-pointer hover:opacity-60;
+  }
+
+  .rentModalBody {
+    @apply grid grid-rows-2 gap-3 justify-center;
+  }
+
+  .infoModalBody {
+    @apply grid grid-rows-2 gap-2 px-4;
+  }
+
+  .infoModalFooter {
+    @apply grid grid-cols-2 px-6 gap-8 mb-5;
+  }
+
+  .footerItemContainer {
+    @apply font-semibold colorRed;
+  }
+
+  .footerItemTitle {
+    @apply colorGreen mb-2 text-lg;
+  }
+
+  .footerItemBody {
+    @apply h-36 overflow-auto;
+  }
+
+  .footerItemRow {
+    @apply p-2 border-2 border-b-0 border-gray-400 hover:bg-gray-200;
   }
 }
