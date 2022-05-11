@@ -6,7 +6,11 @@ import { badgeColor, getModalBody } from "./Card.config";
 import { RentModal } from "./modals/RentModal";
 import { InfoModal } from "./modals/info-modal/InfoModal";
 
-export const Card = ({ data, type }) => {
+export const Card = ({ data, type, rentedItem }) => {
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isRentModalOpen, setIsRentModalOpen] = useState(false);
+  const [isUnrentModalOpen, setIsUnrentModalOpen] = useState(false);
+
   const {
     _id,
     title,
@@ -20,8 +24,8 @@ export const Card = ({ data, type }) => {
     doctors,
   } = data;
 
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [isRentModalOpen, setIsRentModalOpen] = useState(false);
+  const rentedAndSame = () => rentedItem && rentedItem === _id;
+  const rentedAndDiff = () => rentedItem && rentedItem !== _id;
 
   return (
     <div className="card">
@@ -53,10 +57,18 @@ export const Card = ({ data, type }) => {
             onClick={() => setIsInfoModalOpen(true)}
           />
           <Button
-            text="Rent now"
+            text={rentedAndSame() ? "Unrent" : "Rent"}
+            title={
+              rentedAndDiff() ? "Only one item can be rented at a time" : ""
+            }
             width="sm"
             height="sm"
-            onClick={() => setIsRentModalOpen(true)}
+            disabled={rentedAndDiff()}
+            onClick={() =>
+              rentedAndSame()
+                ? setIsUnrentModalOpen(true)
+                : setIsRentModalOpen(true)
+            }
           />
         </div>
       </div>
@@ -72,6 +84,15 @@ export const Card = ({ data, type }) => {
         isModalOpen={isRentModalOpen}
         setIsModalOpen={setIsRentModalOpen}
         id={_id}
+        action="Rent"
+        type={type}
+        title={title}
+      />
+      <RentModal
+        isModalOpen={isUnrentModalOpen}
+        setIsModalOpen={setIsUnrentModalOpen}
+        id={_id}
+        action="Unrent"
         type={type}
         title={title}
       />

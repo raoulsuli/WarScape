@@ -17,9 +17,9 @@ export const Button = ({
   return (
     <button
       type="button"
-      className={`btn ${disabled ? "bg-gray-500" : btnColor} ${widths[width]} ${
-        heights[height]
-      } ${className}`}
+      className={`btn ${
+        disabled ? "bg-gray-500" : `${btnColor} hover:opacity-80`
+      } ${widths[width]} ${heights[height]} ${className}`}
       disabled={disabled}
       {...props}
     >

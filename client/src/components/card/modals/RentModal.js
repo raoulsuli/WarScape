@@ -6,9 +6,16 @@ import { Input } from "../../forms/Input";
 import { useHttp } from "../../useHttp";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import { MODAL_STYLES } from "../../../utils/constants";
+import { getCurrentDate, MODAL_STYLES } from "../../../utils/constants";
 
-export const RentModal = ({ isModalOpen, setIsModalOpen, id, title, type }) => {
+export const RentModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  id,
+  action,
+  title,
+  type,
+}) => {
   const [size, setSize] = useState(0);
   const [date, setDate] = useState(null);
   const [, postRequest] = useHttp();
@@ -24,6 +31,16 @@ export const RentModal = ({ isModalOpen, setIsModalOpen, id, title, type }) => {
     }).then(() => navigate(0));
   };
 
+  const unrent = () => {
+    postRequest(`/rent${type}`, {
+      id: id,
+      size: 0,
+      email: user.email,
+    }).then(() => navigate(0));
+  };
+
+  const isRentAction = () => action === "Rent";
+
   return (
     <Modal
       isOpen={isModalOpen}
@@ -36,26 +53,29 @@ export const RentModal = ({ isModalOpen, setIsModalOpen, id, title, type }) => {
     >
       <div className="grid grid-rows-2">
         <div className="modalTitle">
-          {`Rent ${type} ${title}`}
+          {`${action} ${type} ${title}`}
           <XIcon className="closeIcon" onClick={() => setIsModalOpen(false)} />
         </div>
-        <div className="rentModalBody">
-          <Input
-            type="number"
-            min="0"
-            width="md"
-            height="sm"
-            className="colorRed"
-            onChange={(e) => setSize(e.target.value)}
-          />
-          <Input
-            type="date"
-            width="md"
-            height="sm"
-            className="colorRed"
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </div>
+        {isRentAction() && (
+          <div className="rentModalBody">
+            <Input
+              type="number"
+              min="0"
+              width="md"
+              height="sm"
+              className="colorRed"
+              onChange={(e) => setSize(e.target.value)}
+            />
+            <Input
+              type="date"
+              width="md"
+              height="sm"
+              className="colorRed"
+              min={getCurrentDate()}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+        )}
         <div className="flex justify-evenly mt-10">
           <Button
             text="Decline"
@@ -66,11 +86,11 @@ export const RentModal = ({ isModalOpen, setIsModalOpen, id, title, type }) => {
           />
           <Button
             text="Confirm"
-            disabled={!size || size < 1 || !date}
+            disabled={isRentAction() && (!size || size < 1 || !date)}
             width="sm"
             height="sm"
             btnColor="bg-green-600"
-            onClick={rent}
+            onClick={() => (isRentAction() ? rent() : unrent())}
           />
         </div>
       </div>

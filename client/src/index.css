@@ -104,7 +104,7 @@ body {
   /* Buttons */
 
   .btn {
-    @apply focus:outline-none hover:opacity-80 text-white focus:ring-4 rounded-lg font-semibold py-1.5 px-2.5 mb-2;
+    @apply focus:outline-none text-white focus:ring-4 rounded-lg font-semibold py-1.5 px-2.5 mb-2;
   }
 
   .btnRed {

@@ -15,6 +15,10 @@ module.exports = {
       zIndex: 2,
     },
   },
+  getCurrentDate: () =>
+    new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0],
   capitalize: (text) => text.charAt(0).toUpperCase() + text.slice(1),
   useOutsideClick: ({ ref1, ref2 }, setClickedOutside) => {
     useEffect(() => {

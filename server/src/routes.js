@@ -24,11 +24,12 @@ router.get("/borders", checkJwt, async (_, res) => {
 });
 
 router.get("/rentals", checkJwt, async (req, res) => {
-  const { email, active } = req.query;
+  const { email, active, type } = req.query;
 
   const queryParams = {};
   if (email) Object.assign(queryParams, { user_email: email });
   if (active) Object.assign(queryParams, { active: true });
+  if (type) Object.assign(queryParams, { type: type });
 
   const rentals = await RentalHistory.find(queryParams);
 
@@ -126,7 +127,7 @@ router.post("/borders", checkJwt, checkPermission, async (req, res) => {
 router.post("/rentShelter", checkJwt, async (req, res) => {
   const { id, size, date, email } = req.body;
 
-  const fieldsArr = [id, size, date, email];
+  const fieldsArr = [id, size, email];
 
   if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
@@ -155,6 +156,10 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
       }
     } else {
       if (!rentalHistory && shelter.size + parseInt(size) <= shelter.capacity) {
+        if (fieldsUndefined([date])) {
+          res.status(400).send();
+          return;
+        }
         // no current rental
         shelter.size += parseInt(size);
 
@@ -182,7 +187,7 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
 router.post("/rentBorder", checkJwt, async (req, res) => {
   const { id, size, date, email } = req.body;
 
-  const fieldsArr = [id, size, date, email];
+  const fieldsArr = [id, size, email];
 
   if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
@@ -211,6 +216,10 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
       }
     } else {
       if (!rentalHistory && border.size + parseInt(size) <= border.capacity) {
+        if (fieldsUndefined([date])) {
+          res.status(400).send();
+          return;
+        }
         // no current rental
         border.size += parseInt(size);
 

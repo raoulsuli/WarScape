@@ -4,10 +4,6 @@ Frontend ->
 	Account ->
 		rentals list - active si nonactive, posibilitate de unrent pe nonactive
 	
-	Borders, Shelters ->
-		- nu te lasa sa dai rent daca ai deja rezervat un shelter/border
-		- buton de unrent pentru cea activa
-
 	Admin ->
 		- fara rent pentru admin -- pe b&s
 		- add/edit/delete pentru admin -- pe b&s
