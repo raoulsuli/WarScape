@@ -13,7 +13,6 @@ Frontend ->
 
 serviciu altertare mail
 
-- User Stories rectificat dupa cod
 - Design rectificat dupa cod
 
 
