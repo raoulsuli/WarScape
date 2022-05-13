@@ -2,8 +2,8 @@ _format_version: "2.1"
 
 services:
   - name: client
-    url: http://warscape_client
+    url: http://client:3000
     routes:
-      - name: borders
+      - name: client-service
         paths:
           - /

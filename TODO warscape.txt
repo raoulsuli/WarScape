@@ -18,6 +18,5 @@ serviciu altertare mail
 
 IDP
 - rabbitMQ
-- CI/CD - build, test, deploy - scos instalare plugin
-- reverse proxy / api gateway
-- instalat plugin in compose
+- CI/CD - build, test, deploy
+- instalat plugin in compose & scos instalare plugin din ci/cd
