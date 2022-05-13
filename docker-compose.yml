@@ -3,13 +3,13 @@ version: "3.8"
 services:
   client:
     build: ./client
+    container_name: frontend-container
     logging:
       driver: loki
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     ports:
       - "3000:3000"
-    container_name: frontend-container
     restart: always
     networks:
       - app-network
@@ -37,20 +37,20 @@ services:
       - monitoring
 
   db:
-    image: mongo:5.0.6
+    image: mongo:latest
     container_name: db-container
     logging:
       driver: loki
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
-    ports:
-      - 27017:27017
     environment:
       - MONGO_INITDB_DATABASE=WarScape
     restart: always
     volumes:
       - dbdata:/data/db
       - ./configs/mongo/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
     networks:
       - app-network
       - logging
@@ -58,6 +58,7 @@ services:
 
   prometheus:
     image: prom/prometheus
+    container_name: prometheus-container
     volumes:
       - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -68,9 +69,10 @@ services:
 
   loki:
     image: grafana/loki
+    container_name: loki-container
     volumes:
       - ./configs/loki/loki.yml:/etc/config/loki.yml
-      - loki-data:/wal
+      - ./configs/loki/wal:/wal
     entrypoint:
       - /usr/bin/loki
       - -config.file=/etc/config/loki.yml
@@ -82,8 +84,9 @@ services:
 
   grafana:
     image: grafana/grafana
+    container_name: grafana-container
     volumes:
-      - grafana-volume:/var/lib/grafana
+      - grafana_volume:/var/lib/grafana
     ports:
       - 3002:3000
     depends_on:
@@ -100,12 +103,13 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - portainer-data:/data
+      - portainer_data:/data
     ports:
       - 9000:9000
 
   kong:
     image: kong:latest
+    container_name: kong-container
     volumes:
       - ./configs/kong:/usr/local/kong/declarative
     environment:
@@ -126,9 +130,8 @@ services:
 
 volumes:
   dbdata:
-  grafana-volume:
-  portainer-data:
-  loki-data:
+  grafana_volume:
+  portainer_data:
 
 networks:
   app-network:
