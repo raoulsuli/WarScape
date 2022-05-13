@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: ./start_docker.sh
+        run: ./docker_start.sh
 
   deploy:
     runs-on: ubuntu-latest
