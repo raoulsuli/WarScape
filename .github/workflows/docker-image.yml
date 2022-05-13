@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: ./docker_start.sh
+        run: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions && docker-compose up -d
 
   deploy:
     runs-on: ubuntu-latest
