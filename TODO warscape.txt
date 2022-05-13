@@ -1,22 +1,17 @@
-PWEB
+1. rabbitMQ + serviciu alertare
 
 Frontend ->
-	Account ->
-		rentals list - active si nonactive, posibilitate de unrent pe nonactive
-	
-	Admin ->
+	3. Admin ->
 		- fara rent pentru admin -- pe b&s
 		- add/edit/delete pentru admin -- pe b&s
 		- pagina de vazut toate rentals -- admin-page
 	
-	Verificari
+	4. Account ->
+		rentals list - active si nonactive, posibilitate de unrent pe nonactive
 
-serviciu altertare mail
+	5. Verificari
 
-- Design rectificat dupa cod
-
+6. Design rectificat dupa cod
 
 IDP
-- rabbitMQ
-- CI/CD - build, test, deploy
-- instalat plugin in compose & scos instalare plugin din ci/cd
+7. CI/CD - build, test, deploy

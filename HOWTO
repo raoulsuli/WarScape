@@ -1,6 +1,0 @@
-Logging:
-Prima oara comanda asta:
-docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-Apoi:
-docker-compose up (normal)
-Grafana este la localhost:3002.

@@ -1,2 +1,3 @@
 configs/loki/wal
 portainer-data
+dbdata

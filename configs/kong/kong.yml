@@ -1,9 +1,9 @@
 _format_version: "2.1"
 
 services:
-  - name: client
-    url: http://client:3000
+  - name: server
+    url: http://server:5000
     routes:
-      - name: client-service
+      - name: server-service
         paths:
           - /

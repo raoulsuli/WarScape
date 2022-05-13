@@ -1,5 +1,4 @@
 const { useEffect } = require("react");
-const { authSettings } = require("../utils/authSettings");
 
 module.exports = {
   MODAL_STYLES: {
@@ -37,8 +36,14 @@ module.exports = {
     }, [ref1, ref2]);
   },
   callApi: async (route, token, method, body) => {
+    const ENV = process.env.REACT_APP_ENV || "development";
+
+    const BACKEND_API = `http://localhost${
+      ENV === "production" ? "" : ":5000"
+    }`;
+
     try {
-      const path = authSettings.BACKEND_API + route;
+      const path = BACKEND_API + route;
       const options = {
         headers: {
           Accept: "application/json",
