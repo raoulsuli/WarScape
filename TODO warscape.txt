@@ -1,6 +1,5 @@
-0. facut client sa astepte dupa kong
-
 Frontend ->
+
 	3. Admin ->
 		- fara rent pentru admin -- pe b&s
 		- add/edit/delete pentru admin -- pe b&s
@@ -16,4 +15,5 @@ Frontend ->
 6. Design rectificat dupa cod
 
 IDP
+
 7. CI/CD - build, test, deploy

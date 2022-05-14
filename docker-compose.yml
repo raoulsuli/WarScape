@@ -124,6 +124,7 @@ services:
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_DNS_ORDER: LAST,A,CNAME
     ports:
       - 80:8000
       - 443:8443
