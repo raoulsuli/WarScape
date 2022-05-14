@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const isValidObjectId = require("mongoose").isValidObjectId;
 
 const Border = require("./models/Border");
 const Shelter = require("./models/Shelter");
 const RentalHistory = require("./models/RentalHistory");
 
-const isValidObjectId = require("mongoose").isValidObjectId;
-
 const { checkJwt, checkPermission } = require("./utils/auth");
-
 const { fieldsUndefined, OBJECT_TYPE } = require("./utils/constants");
+const { publish, consume } = require("./utils/amqp");
 
 // GET
 
@@ -151,6 +150,13 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
         await shelter.save();
         await rentalHistory.save();
         res.status(200).send({});
+        publish("shelter.unrent", {
+          email: email,
+          title: shelter.title,
+          city: shelter.city,
+          region: shelter.region,
+          address: shelter.address,
+        });
       } else {
         res.status(404).send();
       }
@@ -175,6 +181,15 @@ router.post("/rentShelter", checkJwt, async (req, res) => {
         await shelter.save();
         await newRental.save();
         res.status(200).send(newRental);
+        publish("shelter.rent", {
+          size: parseInt(size),
+          date: date,
+          email: email,
+          title: shelter.title,
+          city: shelter.city,
+          region: shelter.region,
+          address: shelter.address,
+        });
       } else {
         res.status(400).send();
       }
@@ -211,6 +226,13 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
         await border.save();
         await rentalHistory.save();
         res.status(200).send({});
+        publish("border.unrent", {
+          email: email,
+          title: border.title,
+          city: border.city,
+          region: border.region,
+          address: border.address,
+        });
       } else {
         res.status(404).send();
       }
@@ -235,6 +257,15 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
         await border.save();
         await newRental.save();
         res.status(200).send(newRental);
+        publish("border.rent", {
+          size: parseInt(size),
+          date: date,
+          email: email,
+          title: border.title,
+          city: border.city,
+          region: border.region,
+          address: border.address,
+        });
       } else {
         res.status(400).send();
       }
@@ -337,5 +368,9 @@ router.delete("/borders", checkJwt, checkPermission, async (req, res) => {
     res.status(200).send({});
   }
 });
+
+if (process.env.NODE_ENV === "production") {
+  (async () => consume())(); // consume rabbitmq requests
+}
 
 module.exports = router;

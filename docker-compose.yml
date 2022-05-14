@@ -25,13 +25,18 @@ services:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     environment:
       NODE_ENV: production
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     links:
       - db
+      - rabbitmq
     restart: always
     ports:
       - "5000:5000"
     networks:
       - app-network
+      - rabbitmq-network
       - internal
       - logging
       - monitoring
@@ -45,7 +50,6 @@ services:
         loki-url: "http://localhost:3100/loki/api/v1/push"
     environment:
       - MONGO_INITDB_DATABASE=WarScape
-    restart: always
     volumes:
       - dbdata:/data/db
       - ./configs/mongo/init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
@@ -128,6 +132,17 @@ services:
     networks:
       - internal
 
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: "exit 0"
+    networks:
+      - rabbitmq-network
+
 volumes:
   dbdata:
   grafana_volume:
@@ -139,3 +154,4 @@ networks:
   logging:
   visualizing:
   monitoring:
+  rabbitmq-network:

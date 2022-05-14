@@ -1,4 +1,4 @@
-1. rabbitMQ + serviciu alertare
+0. facut client sa astepte dupa kong
 
 Frontend ->
 	3. Admin ->
@@ -8,6 +8,8 @@ Frontend ->
 	
 	4. Account ->
 		rentals list - active si nonactive, posibilitate de unrent pe nonactive
+
+	Mesaje de eroare la post-uri b & s
 
 	5. Verificari
 
