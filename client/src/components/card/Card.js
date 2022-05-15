@@ -3,8 +3,8 @@ import { Button } from "../Button";
 import { Map } from "../Map";
 import { Badge } from "../Badge";
 import { badgeColor, getModalBody } from "./Card.config";
-import { RentModal } from "./modals/RentModal";
-import { InfoModal } from "./modals/info-modal/InfoModal";
+import { RentModal } from "../modals/RentModal";
+import { InfoModal } from "./info-modal/InfoModal";
 
 export const Card = ({ data, type, rentedItem }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -83,16 +83,16 @@ export const Card = ({ data, type, rentedItem }) => {
       <RentModal
         isModalOpen={isRentModalOpen}
         setIsModalOpen={setIsRentModalOpen}
-        id={_id}
         action="Rent"
+        id={_id}
         type={type}
         title={title}
       />
       <RentModal
         isModalOpen={isUnrentModalOpen}
         setIsModalOpen={setIsUnrentModalOpen}
-        id={_id}
         action="Unrent"
+        id={_id}
         type={type}
         title={title}
       />

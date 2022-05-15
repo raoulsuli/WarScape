@@ -32,7 +32,7 @@ export const Navbar = () => {
   useOutsideClick(navRef, setNavMenuOpened);
 
   return (
-    <div className="relative">
+    <div className="navContainer">
       <nav className="nav">
         <Link to="/" className="logoContainer">
           <Logo className="logo" alt="WarScape Logo" />
@@ -63,8 +63,12 @@ export const Navbar = () => {
         isActive={navMenuOpened}
         className="top-12 right-12"
       >
-        <Link to="/borders">Borders</Link>
-        <Link to="/shelters">Shelters</Link>
+        <Link to="/borders" onClick={() => setNavMenuOpened(false)}>
+          Borders
+        </Link>
+        <Link to="/shelters" onClick={() => setNavMenuOpened(false)}>
+          Shelters
+        </Link>
       </Dropdown>
 
       <Dropdown
@@ -72,7 +76,9 @@ export const Navbar = () => {
         isActive={userMenuOpened}
         className="top-12 right-24 md:right-12"
       >
-        <Link to="/account">Account</Link>
+        <Link to="/rentals" onClick={() => setUserMenuOpened(false)}>
+          Rentals
+        </Link>
         <div onClick={() => logout({ returnTo: window.location.origin })}>
           Sign out
         </div>

@@ -3,7 +3,7 @@ import { Spinner } from "./components/Spinner";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./pages/Home";
-import { Account } from "./pages/Account";
+import { Rentals } from "./pages/Rentals";
 import { Borders } from "./pages/Borders";
 import { Shelters } from "./pages/Shelters";
 
@@ -22,7 +22,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/account" element={privateRoute(<Account />)} />
+            <Route exact path="/rentals" element={privateRoute(<Rentals />)} />
             <Route exact path="/borders" element={privateRoute(<Borders />)} />
             <Route
               exact

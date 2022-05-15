@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import { XIcon } from "@heroicons/react/outline";
-import { Button } from "../../Button";
-import { Input } from "../../forms/Input";
-import { useHttp } from "../../useHttp";
+import { Button } from "../Button";
+import { Input } from "../forms/Input";
+import { useHttp } from "../useHttp";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentDate, MODAL_STYLES } from "../../../utils/constants";
+import { getCurrentDate, MODAL_STYLES } from "../../utils/constants";
 
 export const RentModal = ({
   isModalOpen,
@@ -89,7 +89,7 @@ export const RentModal = ({
             disabled={isRentAction() && (!size || size < 1 || !date)}
             width="sm"
             height="sm"
-            btnColor="bg-green-600"
+            btnColor="btnGreen"
             onClick={() => (isRentAction() ? rent() : unrent())}
           />
         </div>

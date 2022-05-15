@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import { XIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import { MODAL_STYLES } from "../../../../utils/constants";
+import { MODAL_STYLES } from "../../../utils/constants";
 import { FooterItem } from "./FooterItem";
 
 export const InfoModal = ({

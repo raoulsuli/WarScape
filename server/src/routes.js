@@ -44,6 +44,7 @@ router.get("/rentals", checkJwt, async (req, res) => {
       size: r.size,
       date: r.date,
       active: r.active,
+      email: r.user_email,
       item: objects[index],
     }));
 

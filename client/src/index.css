@@ -61,6 +61,10 @@ body {
 
   /* Navbar */
 
+  .navContainer {
+    @apply relative border-b-2 border-gray-300 pb-2;
+  }
+
   .nav {
     @apply flex justify-between items-center mx-auto px-2 sm:px-4;
   }
@@ -82,7 +86,7 @@ body {
   }
 
   .navLink {
-    @apply text-xl font-semibold colorGreen;
+    @apply text-xl font-semibold colorGreen hover:colorRed;
   }
 
   .navLinkActive {
@@ -123,6 +127,36 @@ body {
 
   .homeText {
     @apply grid gap-3 text-center;
+  }
+
+  /* Rentals */
+
+  .rentalsTitle {
+    @apply text-3xl colorRed flex justify-center font-bold mt-10;
+  }
+
+  .rentalsContainer {
+    @apply flex mt-6 justify-center mb-10;
+  }
+
+  .rentalsTable {
+    @apply table-auto w-full mx-10 text-center bgWhite rounded-xl shadow-lg text-xl;
+  }
+
+  .rentalsTBody {
+    @apply font-semibold colorGreen;
+  }
+
+  .rentalsDeleteIcon {
+    @apply flex justify-center py-5;
+  }
+
+  .rentalsDeleteActive {
+    @apply text-red-600 cursor-pointer hover:opacity-70;
+  }
+
+  .emptyTableText {
+    @apply text-xl colorGreen font-semibold mt-5 italic;
   }
 
   /* Input */

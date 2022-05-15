@@ -1,19 +1,11 @@
-Frontend ->
-
-	3. Admin ->
-		- fara rent pentru admin -- pe b&s
-		- add/edit/delete pentru admin -- pe b&s
-		- pagina de vazut toate rentals -- admin-page
+-> Admin ->
+	- fara rent pentru admin -- pe b&s
+	- add/edit/delete pentru admin -- pe b&s
 	
-	4. Account ->
-		rentals list - active si nonactive, posibilitate de unrent pe nonactive
+-> Mesaje de eroare la post-uri b & s
 
-	Mesaje de eroare la post-uri b & s
+-> Verificari
 
-	5. Verificari
+-> Design rectificat dupa cod
 
-6. Design rectificat dupa cod
-
-IDP
-
-7. CI/CD - build, test, deploy
+-> CI/CD - build, test, deploy
