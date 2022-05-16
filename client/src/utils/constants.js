@@ -12,6 +12,7 @@ module.exports = {
     },
     overlay: {
       zIndex: 2,
+      overflow: "auto",
     },
   },
   getCurrentDate: () =>

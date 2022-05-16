@@ -1,6 +1,6 @@
 export const TextArea = ({ label, value, onChange, placeholder }) => {
   return (
-    <div>
+    <div className="flex flex-col">
       <label className="label">{label}</label>
       <textarea
         value={value}
