@@ -1,5 +1,0 @@
--> Verificat
-
--> Design rectificat dupa cod
-
--> CI/CD - build -- verificat, deploy
