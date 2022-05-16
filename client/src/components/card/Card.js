@@ -17,6 +17,7 @@ export const Card = ({ data, type, rentedItem }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isRentModalOpen, setIsRentModalOpen] = useState(false);
   const [isUnrentModalOpen, setIsUnrentModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [, , , deleteRequest] = useHttp();
   const navigate = useNavigate();
@@ -54,10 +55,6 @@ export const Card = ({ data, type, rentedItem }) => {
 
   const actionText = isAdmin() ? "Edit" : rentedAndSame() ? "Unrent" : "Rent";
 
-  const deleteItem = () => {
-    deleteRequest(`/${lowercase(type)}s`, { id: _id }).then(() => navigate(0));
-  };
-
   return (
     <div className="card">
       <Badge
@@ -89,7 +86,7 @@ export const Card = ({ data, type, rentedItem }) => {
           {isAdmin() && (
             <ArchiveIcon
               className="h-8 deleteIconActive"
-              onClick={deleteItem}
+              onClick={() => setIsDeleteModalOpen(true)}
             />
           )}
           <Button
@@ -125,6 +122,14 @@ export const Card = ({ data, type, rentedItem }) => {
         isModalOpen={isUnrentModalOpen}
         setIsModalOpen={setIsUnrentModalOpen}
         action="Unrent"
+        id={_id}
+        type={type}
+        title={title}
+      />
+      <RentModal
+        isModalOpen={isDeleteModalOpen}
+        setIsModalOpen={setIsDeleteModalOpen}
+        action="Delete"
         id={_id}
         type={type}
         title={title}

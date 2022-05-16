@@ -6,7 +6,7 @@ import { Input } from "../forms/Input";
 import { useHttp } from "../useHttp";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentDate, MODAL_STYLES } from "../../utils/constants";
+import { getCurrentDate, MODAL_STYLES, lowercase } from "../../utils/constants";
 import { authSettings } from "../../utils/authSettings";
 
 export const RentModal = ({
@@ -21,12 +21,15 @@ export const RentModal = ({
   const [size, setSize] = useState(0);
   const [date, setDate] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [, postRequest] = useHttp();
+  const [, postRequest, , deleteRequest] = useHttp();
   const { user } = useAuth0();
   const navigate = useNavigate();
 
   const isAdmin = () =>
     user[authSettings.AUDIENCE].includes(authSettings.ADMIN_PERMISSION);
+
+  const isRentAction = () => action === "Rent";
+  const isDeleteAction = () => action === "Delete";
 
   const rent = () => {
     postRequest(`/rent${type}`, {
@@ -51,7 +54,19 @@ export const RentModal = ({
     }).then(() => navigate(0));
   };
 
-  const isRentAction = () => action === "Rent";
+  const deleteItem = () => {
+    deleteRequest(`/${lowercase(type)}s`, { id: id }).then(() => navigate(0));
+  };
+
+  const onActionClick = () => {
+    if (isDeleteAction()) {
+      deleteItem();
+    } else if (isRentAction()) {
+      rent();
+    } else {
+      unrent();
+    }
+  };
 
   return (
     <Modal
@@ -109,7 +124,7 @@ export const RentModal = ({
             disabled={isRentAction() && (!size || size < 1 || !date)}
             height="sm"
             btnColor="btnGreen"
-            onClick={() => (isRentAction() ? rent() : unrent())}
+            onClick={onActionClick}
           />
         </div>
       </div>

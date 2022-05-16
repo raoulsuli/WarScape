@@ -264,7 +264,7 @@ body {
   }
 
   .addEditModalFields {
-    @apply grid grid-cols-1 gap-x-10 gap-y-6 justify-center;
+    @apply grid grid-cols-1 gap-x-10 gap-y-6 justify-items-center;
   }
 
   @media (min-width: 1856px) {
