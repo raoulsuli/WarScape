@@ -7,6 +7,7 @@ import { useHttp } from "../useHttp";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentDate, MODAL_STYLES } from "../../utils/constants";
+import { authSettings } from "../../utils/authSettings";
 
 export const RentModal = ({
   isModalOpen,
@@ -15,12 +16,17 @@ export const RentModal = ({
   action,
   title,
   type,
+  email,
 }) => {
   const [size, setSize] = useState(0);
   const [date, setDate] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const [, postRequest] = useHttp();
   const { user } = useAuth0();
   const navigate = useNavigate();
+
+  const isAdmin = () =>
+    user[authSettings.AUDIENCE].includes(authSettings.ADMIN_PERMISSION);
 
   const rent = () => {
     postRequest(`/rent${type}`, {
@@ -28,14 +34,20 @@ export const RentModal = ({
       size: size,
       date: date,
       email: user.email,
-    }).then(() => navigate(0));
+    }).then((r) => {
+      if (r.status === 400) {
+        setErrorMessage("Size exceeded!");
+      } else {
+        navigate(0);
+      }
+    });
   };
 
   const unrent = () => {
     postRequest(`/rent${type}`, {
       id: id,
       size: 0,
-      email: user.email,
+      email: isAdmin() ? email : user.email,
     }).then(() => navigate(0));
   };
 
@@ -57,29 +69,37 @@ export const RentModal = ({
           <XIcon className="closeIcon" onClick={() => setIsModalOpen(false)} />
         </div>
         {isRentAction() && (
-          <div className="rentModalBody">
-            <Input
-              type="number"
-              min="0"
-              width="md"
-              height="sm"
-              className="colorRed"
-              onChange={(e) => setSize(e.target.value)}
-            />
-            <Input
-              type="date"
-              width="md"
-              height="sm"
-              className="colorRed"
-              min={getCurrentDate()}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
+          <>
+            <div className="rentModalBody">
+              <Input
+                type="number"
+                min="0"
+                width="md"
+                height="sm"
+                className="colorRed"
+                placeholder="Size"
+                onChange={(e) => {
+                  setSize(e.target.value);
+                  setErrorMessage("");
+                }}
+              />
+              <Input
+                width="md"
+                height="sm"
+                className="colorRed"
+                type="text"
+                placeholder="Date"
+                onFocus={(e) => (e.target.type = "date")}
+                min={getCurrentDate()}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+            <div className="rentModalError">{errorMessage}</div>
+          </>
         )}
-        <div className="flex justify-evenly mt-10">
+        <div className="modalButtons mt-7">
           <Button
             text="Decline"
-            width="sm"
             height="sm"
             btnColor="bg-red-600"
             onClick={() => setIsModalOpen(false)}
@@ -87,7 +107,6 @@ export const RentModal = ({
           <Button
             text="Confirm"
             disabled={isRentAction() && (!size || size < 1 || !date)}
-            width="sm"
             height="sm"
             btnColor="btnGreen"
             onClick={() => (isRentAction() ? rent() : unrent())}

@@ -17,8 +17,8 @@ export const Rentals = () => {
   const isAdmin = () =>
     user[authSettings.AUDIENCE].includes(authSettings.ADMIN_PERMISSION);
 
-  const unrent = (id, type, title) => {
-    setModalInfo({ id: id, type: type, title: title });
+  const unrent = (id, type, title, email) => {
+    setModalInfo({ id: id, type: type, title: title, email: email });
     setIsModalOpen(true);
   };
 
@@ -65,9 +65,15 @@ export const Rentals = () => {
                       <td className="rentalsDeleteIcon">
                         <ArchiveIcon
                           className={`h-8 ${
-                            active ? "rentalsDeleteActive" : "text-gray-500"
+                            active && (isAdmin() || email === user.email)
+                              ? "deleteIconActive"
+                              : "text-gray-500"
                           }`}
-                          onClick={() => active && unrent(_id, type, title)}
+                          onClick={() =>
+                            active &&
+                            (isAdmin() || email === user.email) &&
+                            unrent(_id, type, title, email)
+                          }
                         />
                       </td>
                     </tr>
@@ -87,6 +93,7 @@ export const Rentals = () => {
             id={modalInfo.id}
             type={modalInfo.type}
             title={modalInfo.title}
+            email={modalInfo.email}
           />
         )}
       </div>

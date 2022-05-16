@@ -55,24 +55,14 @@ router.get("/rentals", checkJwt, async (req, res) => {
 // POST
 
 router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
-  const {
-    title,
-    city,
-    region,
-    address,
-    size,
-    capacity,
-    resources,
-    doctors,
-    risk,
-  } = req.body;
+  const { title, city, region, address, capacity, resources, doctors, risk } =
+    req.body;
 
   const fieldsArr = [
     title,
     city,
     region,
     address,
-    size,
     capacity,
     resources,
     doctors,
@@ -89,7 +79,7 @@ router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
     city: city,
     region: region,
     address: address,
-    size: size,
+    size: 0,
     capacity: capacity,
     resources: resources,
     doctors: doctors,
@@ -101,9 +91,9 @@ router.post("/shelters", checkJwt, checkPermission, async (req, res) => {
 });
 
 router.post("/borders", checkJwt, checkPermission, async (req, res) => {
-  const { title, city, region, address, size, capacity, risk } = req.body;
+  const { title, city, region, address, capacity, risk } = req.body;
 
-  const fieldsArr = [title, city, region, address, size, capacity, risk];
+  const fieldsArr = [title, city, region, address, capacity, risk];
 
   if (fieldsUndefined(fieldsArr)) {
     res.status(400).send();
@@ -115,7 +105,7 @@ router.post("/borders", checkJwt, checkPermission, async (req, res) => {
     city: city,
     region: region,
     address: address,
-    size: size,
+    size: 0,
     capacity: capacity,
     risk: risk,
   });
@@ -279,9 +269,9 @@ router.post("/rentBorder", checkJwt, async (req, res) => {
 // PUT
 
 router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
-  const { id, title, size, capacity, resources, doctors, risk } = req.body;
+  const { id, title, capacity, resources, doctors, risk } = req.body;
 
-  const fieldsArr = [id, title, size, capacity, resources, doctors, risk];
+  const fieldsArr = [id, title, capacity, resources, doctors, risk];
 
   if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
@@ -292,7 +282,6 @@ router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
 
   if (shelter) {
     shelter.title = title;
-    shelter.size = size;
     shelter.capacity = capacity;
     shelter.resources = resources;
     shelter.doctors = doctors;
@@ -306,9 +295,9 @@ router.put("/shelters", checkJwt, checkPermission, async (req, res) => {
 });
 
 router.put("/borders", checkJwt, checkPermission, async (req, res) => {
-  const { id, title, size, capacity, risk } = req.body;
+  const { id, title, capacity, risk } = req.body;
 
-  const fieldsArr = [id, title, size, capacity, risk];
+  const fieldsArr = [id, title, capacity, risk];
 
   if (fieldsUndefined(fieldsArr) || !isValidObjectId(id)) {
     res.status(400).send();
@@ -319,7 +308,6 @@ router.put("/borders", checkJwt, checkPermission, async (req, res) => {
 
   if (border) {
     border.title = title;
-    border.size = size;
     border.capacity = capacity;
     border.risk = risk;
 
@@ -347,6 +335,7 @@ router.delete("/shelters", checkJwt, checkPermission, async (req, res) => {
   if (response.deletedCount === 0) {
     res.status(404).send();
   } else {
+    await RentalHistory.deleteMany({ item_id: id });
     res.status(200).send({});
   }
 });
@@ -366,6 +355,7 @@ router.delete("/borders", checkJwt, checkPermission, async (req, res) => {
   if (response.deletedCount === 0) {
     res.status(404).send();
   } else {
+    await RentalHistory.deleteMany({ item_id: id });
     res.status(200).send({});
   }
 });

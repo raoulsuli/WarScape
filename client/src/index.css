@@ -108,7 +108,7 @@ body {
   /* Buttons */
 
   .btn {
-    @apply focus:outline-none text-white focus:ring-4 rounded-lg font-semibold py-1.5 px-2.5 mb-2;
+    @apply focus:outline-none text-white rounded-lg font-semibold py-1.5 px-2.5 mb-2;
   }
 
   .btnRed {
@@ -151,7 +151,7 @@ body {
     @apply flex justify-center py-5;
   }
 
-  .rentalsDeleteActive {
+  .deleteIconActive {
     @apply text-red-600 cursor-pointer hover:opacity-70;
   }
 
@@ -169,6 +169,10 @@ body {
     @apply shadow-none cursor-pointer;
   }
 
+  .label {
+    @apply text-lg colorGreen font-semibold;
+  }
+
   /* Dropdown */
 
   .dropdownMenu {
@@ -182,7 +186,7 @@ body {
   /* Card & Map */
 
   .cardContainer {
-    @apply grid grid-cols-1 lg:grid-cols-2 px-20 justify-items-center mt-28 overflow-auto;
+    @apply grid grid-cols-1 lg:grid-cols-2 px-20 justify-items-center mt-20 overflow-auto;
   }
 
   @media (min-width: 1408px) {
@@ -253,5 +257,27 @@ body {
 
   .footerItemRow {
     @apply p-2 border-2 border-b-0 border-gray-400 hover:bg-gray-200;
+  }
+
+  .modalButtons {
+    @apply flex flex-col xl:flex-row ml-6 md:ml-14 xl:justify-evenly xl:ml-0 mt-10;
+  }
+
+  .addEditModalFields {
+    @apply grid grid-cols-1 gap-x-10 gap-y-6 justify-center;
+  }
+
+  @media (min-width: 1856px) {
+    .addEditModalFields {
+      @apply grid-cols-2;
+    }
+
+    .riskFieldParent {
+      @apply col-span-2 justify-center;
+    }
+  }
+
+  .rentModalError {
+    @apply flex justify-center mt-5 font-bold text-red-600;
   }
 }

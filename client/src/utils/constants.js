@@ -19,6 +19,7 @@ module.exports = {
       .toISOString()
       .split("T")[0],
   capitalize: (text) => text.charAt(0).toUpperCase() + text.slice(1),
+  lowercase: (text) => text.charAt(0).toLowerCase() + text.slice(1),
   useOutsideClick: ({ ref1, ref2 }, setClickedOutside) => {
     useEffect(() => {
       const handleClickOutside = (event) => {

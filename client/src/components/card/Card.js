@@ -5,11 +5,22 @@ import { Badge } from "../Badge";
 import { badgeColor, getModalBody } from "./Card.config";
 import { RentModal } from "../modals/RentModal";
 import { InfoModal } from "./info-modal/InfoModal";
+import { useAuth0 } from "@auth0/auth0-react";
+import { authSettings } from "../../utils/authSettings";
+import { ArchiveIcon } from "@heroicons/react/outline";
+import { useHttp } from "../useHttp";
+import { lowercase } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
+import { AddEditModal } from "../modals/add-edit-modal/AddEditModal";
 
 export const Card = ({ data, type, rentedItem }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isRentModalOpen, setIsRentModalOpen] = useState(false);
   const [isUnrentModalOpen, setIsUnrentModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [, , , deleteRequest] = useHttp();
+  const navigate = useNavigate();
+  const { user } = useAuth0();
 
   const {
     _id,
@@ -26,6 +37,26 @@ export const Card = ({ data, type, rentedItem }) => {
 
   const rentedAndSame = () => rentedItem && rentedItem === _id;
   const rentedAndDiff = () => rentedItem && rentedItem !== _id;
+  const isAdmin = () =>
+    user[authSettings.AUDIENCE].includes(authSettings.ADMIN_PERMISSION);
+
+  const onClickAction = () => {
+    if (isAdmin()) {
+      setIsEditModalOpen(true);
+    } else {
+      if (rentedAndSame()) {
+        setIsUnrentModalOpen(true);
+      } else {
+        setIsRentModalOpen(true);
+      }
+    }
+  };
+
+  const actionText = isAdmin() ? "Edit" : rentedAndSame() ? "Unrent" : "Rent";
+
+  const deleteItem = () => {
+    deleteRequest(`/${lowercase(type)}s`, { id: _id }).then(() => navigate(0));
+  };
 
   return (
     <div className="card">
@@ -52,23 +83,25 @@ export const Card = ({ data, type, rentedItem }) => {
           <Button
             text="More info"
             btnColor="btnGreen"
-            width="sm"
             height="sm"
             onClick={() => setIsInfoModalOpen(true)}
           />
+          {isAdmin() && (
+            <ArchiveIcon
+              className="h-8 deleteIconActive"
+              onClick={deleteItem}
+            />
+          )}
           <Button
-            text={rentedAndSame() ? "Unrent" : "Rent"}
+            text={actionText}
             title={
-              rentedAndDiff() ? "Only one item can be rented at a time" : ""
+              !isAdmin() && rentedAndDiff()
+                ? "Only one item can be rented at a time"
+                : ""
             }
-            width="sm"
             height="sm"
-            disabled={rentedAndDiff()}
-            onClick={() =>
-              rentedAndSame()
-                ? setIsUnrentModalOpen(true)
-                : setIsRentModalOpen(true)
-            }
+            disabled={!isAdmin() && rentedAndDiff()}
+            onClick={onClickAction}
           />
         </div>
       </div>
@@ -95,6 +128,13 @@ export const Card = ({ data, type, rentedItem }) => {
         id={_id}
         type={type}
         title={title}
+      />
+      <AddEditModal
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={setIsEditModalOpen}
+        type={type}
+        data={data}
+        action="Edit"
       />
     </div>
   );

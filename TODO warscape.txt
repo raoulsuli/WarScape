@@ -1,11 +1,5 @@
--> Admin ->
-	- fara rent pentru admin -- pe b&s
-	- add/edit/delete pentru admin -- pe b&s
-	
--> Mesaje de eroare la post-uri b & s
-
--> Verificari
+-> confirm la delete, centrat add/edit, Verificat
 
 -> Design rectificat dupa cod
 
--> CI/CD - build, test, deploy
+-> CI/CD - build -- verificat, deploy
