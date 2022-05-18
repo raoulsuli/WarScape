@@ -34,8 +34,11 @@ jobs:
       - name: Build
         run: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions && docker-compose build
         
-      - name: Deploy
+      - name: Push
         run: docker push raoulsuli1/warscape
          
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+        
+      - name: Deploy
+        run: docker pull raoulsuli1/warscape
