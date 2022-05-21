@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   client:
-    image: raoulsuli1/warscape
     build: ./client
     container_name: frontend-container
     logging:
@@ -18,7 +17,6 @@ services:
       - monitoring
 
   server:
-    image: raoulsuli1/warscape
     build: ./server
     container_name: backend-container
     logging:
@@ -44,7 +42,7 @@ services:
       - monitoring
 
   db:
-    image: raoulsuli1/warscape
+    image: mongo:latest
     container_name: db-container
     logging:
       driver: loki
@@ -63,7 +61,7 @@ services:
       - monitoring
 
   prometheus:
-    image: raoulsuli1/warscape
+    image: prom/prometheus
     container_name: prometheus-container
     volumes:
       - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -74,7 +72,7 @@ services:
       - visualizing
 
   loki:
-    image: raoulsuli1/warscape
+    image: grafana/loki
     container_name: loki-container
     volumes:
       - ./configs/loki/loki.yml:/etc/config/loki.yml
@@ -89,7 +87,7 @@ services:
       - visualizing
 
   grafana:
-    image: raoulsuli1/warscape
+    image: grafana/grafana
     container_name: grafana-container
     volumes:
       - grafana_volume:/var/lib/grafana
@@ -101,7 +99,7 @@ services:
       - visualizing
 
   portainer:
-    image: raoulsuli1/warscape
+    image: portainer/portainer-ce:latest
     container_name: portainer-container
     restart: unless-stopped
     security_opt:
@@ -114,7 +112,7 @@ services:
       - 9000:9000
 
   kong:
-    image: raoulsuli1/warscape
+    image: kong:latest
     container_name: kong-container
     volumes:
       - ./configs/kong:/usr/local/kong/declarative
@@ -136,7 +134,7 @@ services:
       - internal
 
   rabbitmq:
-    image: raoulsuli1/warscape
+    image: rabbitmq:management-alpine
     container_name: rabbitmq-container
     ports:
       - 5672:5672
