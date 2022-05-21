@@ -45,4 +45,7 @@ jobs:
 
     steps:
       - name: update runner
-        run: docker-compose up -d
+        run: |
+          docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+          docker pull raoulsuli1/warscape
+          docker run raoulsuli1/warscape
