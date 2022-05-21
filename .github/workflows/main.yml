@@ -6,9 +6,9 @@ name: CI/CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Check Out Repo 
+      - name: Check Out Repo
         uses: actions/checkout@v3
 
       - name: Login to Docker Hub
@@ -33,12 +33,16 @@ jobs:
 
       - name: Build
         run: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions && docker-compose build
-        
+
       - name: Push
         run: docker push raoulsuli1/warscape
-         
+
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-        
-      - name: Deploy
-        run: docker pull raoulsuli1/warscape
+
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: update runner
+        run: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions && docker-compose up -d
